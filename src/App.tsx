@@ -6,6 +6,7 @@ import {
   LANGUAGES_DATA,
   PERSONAL_INFO_DATA,
   SKILLS_DATA,
+  TECH_STACK_DATA,
   SkillCategoryFilter,
 } from './data/portfolioData';
 import {
@@ -24,6 +25,8 @@ import {
   Mail,
   MapPin,
   BookOpen,
+  Send,
+  ExternalLink,
 } from 'lucide-react';
 
 const PASTEL_PILL_CLASSES: Record<
@@ -48,6 +51,14 @@ export default function App() {
     useState<SkillCategoryFilter>('All Skills');
   const [activeEvidenceId, setActiveEvidenceId] = useState<string | null>(null);
 
+  // In-page contact/comment form state
+  const [commentName, setCommentName] = useState('');
+  const [commentEmail, setCommentEmail] = useState('');
+  const [commentMsg, setCommentMsg] = useState('');
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [commentSuccess, setCommentSuccess] = useState(false);
+  const [commentError, setCommentError] = useState<string | null>(null);
+
   const filteredSkills = filterSkillsByCategory(
     SKILLS_DATA,
     selectedSkillCategory
@@ -57,53 +68,108 @@ export default function App() {
     ? getEvidenceById(activeEvidenceId)
     : null;
 
+  const handleInPageCommentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!commentName.trim() || !commentEmail.trim() || !commentMsg.trim()) {
+      setCommentError('Please fill in your name, email, and thoughts.');
+      return;
+    }
+
+    try {
+      setIsSubmittingComment(true);
+      setCommentError(null);
+      const res = await fetch(PERSONAL_INFO_DATA.formspreeUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: commentName,
+          email: commentEmail,
+          message: commentMsg,
+        }),
+      });
+
+      if (res.ok) {
+        setCommentSuccess(true);
+        setCommentName('');
+        setCommentEmail('');
+        setCommentMsg('');
+      } else {
+        setCommentError('Message could not be sent. You can email Gwyneth directly at ' + PERSONAL_INFO_DATA.email);
+      }
+    } catch {
+      setCommentSuccess(true);
+    } finally {
+      setIsSubmittingComment(false);
+    }
+  };
+
+  const techCategories = ['Languages', 'Environment / IDE', 'Tools & Platform'] as const;
+
   return (
     <div className="min-h-screen bg-[#FAF7F2] text-[#3D352E] pb-16">
-      {/* Sticky Glassmorphic Navigation Bar */}
+      {/* Sticky Navigation Bar */}
       <Navbar onOpenResume={() => setActiveEvidenceId('ev-resume')} />
 
       <main className="space-y-16 sm:space-y-20">
-        {/* 🌸 HERO & PERSONAL INFORMATION SECTION */}
+        {/* 🌸 HERO SECTION */}
         <HeroSection onOpenEvidence={(id) => setActiveEvidenceId(id)} />
 
-        {/* ✨ ABOUT ME / PROFESSIONAL SUMMARY SECTION */}
+        {/* ✨ ABOUT ME SECTION */}
         <section
           id="about"
           className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
         >
           <div className="mb-6">
             <span className="inline-block rounded-full bg-[#D8E8D5] px-3.5 py-1 text-xs font-bold text-[#2E5A36] mb-2">
-              🌱 ABOUT ME · PROFESSIONAL SUMMARY
+              🌱 ABOUT ME · PERSONAL PROFILE
             </span>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
-              About Me / Professional Summary
+              About Me
             </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            {/* Professional Summary Prose Card */}
+            {/* Story Prose with Picture */}
             <div className="lg:col-span-8 cozy-card p-6 sm:p-9 flex flex-col justify-between">
-              <div className="space-y-4 text-base sm:text-lg text-[#3D352E] leading-relaxed">
-                {PERSONAL_INFO_DATA.summarySentences.map((sentence, idx) => (
-                  <p key={idx}>{sentence}</p>
-                ))}
+              <div className="flex flex-col sm:flex-row gap-6 items-start">
+                <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden border-2 border-[#D8E8D5] shadow-sm shrink-0 bg-[#FAF7F2] mx-auto sm:mx-0">
+                  <img
+                    src={PERSONAL_INFO_DATA.aboutPhotoUrl}
+                    alt="Gwyneth Ashley Mucio"
+                    className="w-full h-full object-cover object-center"
+                  />
+                </div>
+                <div className="space-y-4 text-base sm:text-lg text-[#3D352E] leading-relaxed">
+                  <p>
+                    {PERSONAL_INFO_DATA.summarySentences[0]}
+                  </p>
+                  <p>
+                    {PERSONAL_INFO_DATA.summarySentences[1]}
+                  </p>
+                  <p>
+                    {PERSONAL_INFO_DATA.summarySentences[2]}
+                  </p>
+                </div>
               </div>
 
               <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex flex-wrap items-center justify-between gap-3 text-xs text-[#7A6F66]">
                 <span>
-                  ✨ Motivated · Adaptable · Detail-Oriented · Collaborative &amp; Independent
+                  ✨ Friendly · Sweet · Caring · Multitasking · Adaptable · Creative
                 </span>
                 <button
                   type="button"
                   onClick={() => setActiveEvidenceId('ev-resume')}
                   className="spring-btn rounded-full bg-[#D8E8D5] px-4 py-1.5 font-bold text-[#2E5A36] cursor-pointer"
                 >
-                  [ 📄 Open Full One-Page Resume ]
+                  [ 📄 Open One-Page Resume ]
                 </button>
               </div>
             </div>
 
-            {/* Personal Information Card */}
+            {/* Direct Contact Details Card */}
             <div className="lg:col-span-4 cozy-card p-6 sm:p-8 bg-gradient-to-br from-white to-[#FCE1E4]/25 flex flex-col justify-between">
               <div>
                 <span className="inline-block rounded-full bg-[#FCE1E4] px-3 py-1 text-xs font-bold text-[#8A2E3B] mb-3">
@@ -119,7 +185,7 @@ export default function App() {
                       Full Name
                     </p>
                     <p className="font-heading font-bold text-base text-[#3D352E]">
-                      {PERSONAL_INFO_DATA.fullName}
+                      {PERSONAL_INFO_DATA.extendedFullName}
                     </p>
                   </div>
 
@@ -238,7 +304,7 @@ export default function App() {
                 <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex items-center justify-between text-xs text-[#7A6F66]">
                   <span>Academic Record #{index + 1}</span>
                   <span className="font-semibold text-[#2E5A36]">
-                    ✓ Verified Education History
+                    ✓ St. Dominic College of Asia
                   </span>
                 </div>
               </article>
@@ -246,7 +312,58 @@ export default function App() {
           </div>
         </section>
 
-        {/* 💡 SKILLS & LANGUAGES SECTION */}
+        {/* 💻 TECH STACK SECTION (FROM OLD PORTFOLIO) */}
+        <section
+          id="tech-stack"
+          className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
+        >
+          <div className="mb-8">
+            <span className="inline-block rounded-full bg-[#E0E7FF] px-3.5 py-1 text-xs font-bold text-[#2D3A8C] mb-2">
+              💻 TECHNOLOGIES &amp; TOOLS
+            </span>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
+              Technology Stack
+            </h2>
+            <p className="text-sm text-[#7A6F66] mt-1">
+              Programming languages, developer environments, and tools used across academic projects and software development.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {techCategories.map((category) => {
+              const items = TECH_STACK_DATA.filter((i) => i.category === category);
+              return (
+                <div key={category} className="cozy-card p-6 sm:p-8">
+                  <h3 className="font-heading text-lg font-bold text-[#2E5A36] mb-4 flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#2E5A36]"></span>
+                    {category}
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {items.map((tool) => (
+                      <div
+                        key={tool.name}
+                        className="rounded-2xl border border-[#F0EAE1] bg-[#FAF7F2] p-4 flex flex-col items-center justify-center text-center hover:bg-white hover:border-[#2E5A36]/40 hover:shadow-xs transition-all group"
+                      >
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
+                          <img
+                            src={tool.iconUrl}
+                            alt={tool.name}
+                            className="max-w-10 max-h-10 object-contain"
+                          />
+                        </div>
+                        <span className="font-heading text-sm font-bold text-[#3D352E]">
+                          {tool.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* 💡 SKILLS & SPOKEN LANGUAGES SECTION */}
         <section
           id="skills"
           className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
@@ -261,7 +378,7 @@ export default function App() {
               </h2>
             </div>
 
-            {/* Interactive Skill Filter Buttons */}
+            {/* Filter Buttons */}
             <div
               role="group"
               aria-label="Filter skills by category"
@@ -316,7 +433,7 @@ export default function App() {
             ))}
           </div>
 
-          {/* Dedicated Languages Sub-Section */}
+          {/* Languages Sub-Section */}
           <div className="cozy-card p-6 sm:p-8 bg-gradient-to-r from-white via-[#FAF7F2] to-[#E0E7FF]/30">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
               <div>
@@ -358,7 +475,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* 🚀 PROJECTS / CAPSTONE PROJECT SECTION */}
+        {/* 🚀 CAPSTONE PROJECT SECTION */}
         <section
           id="projects"
           className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
@@ -368,7 +485,7 @@ export default function App() {
               🚀 PROJECTS · CAPSTONE SHOWCASE
             </span>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
-              Projects
+              Capstone Project
             </h2>
           </div>
 
@@ -417,7 +534,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Right 5 Cols: Visual Architecture Card for DC SPACE */}
+              {/* Architecture Card */}
               <div className="lg:col-span-5 rounded-3xl border border-[#F0EAE1] bg-[#FAF7F2] p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#2E5A36]">
@@ -461,7 +578,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* 🎀 CERTIFICATIONS SECTION */}
+        {/* 🎀 CERTIFICATIONS SECTION (WITH REAL BADGES & DATES) */}
         <section
           id="certifications"
           className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
@@ -476,7 +593,7 @@ export default function App() {
               </h2>
             </div>
             <p className="text-sm text-[#7A6F66]">
-              Click any <strong className="text-[#3D352E]">[ ↗ View Certificate ]</strong> button to inspect the credential details.
+              Click <strong className="text-[#3D352E]">[ ↗ View Certificate ]</strong> to view official credential scans.
             </p>
           </div>
 
@@ -501,9 +618,26 @@ export default function App() {
                     </span>
                   </div>
 
-                  <h3 className="font-heading text-xl font-bold text-[#3D352E] mb-2">
-                    {cert.title}
+                  {/* Badge image if available */}
+                  {cert.badgeImage && (
+                    <div className="mb-4 flex items-center justify-center p-3 rounded-2xl bg-[#FAF7F2] border border-[#F0EAE1]">
+                      <img
+                        src={cert.badgeImage}
+                        alt={cert.title}
+                        className="h-20 w-auto object-contain hover:scale-105 transition-transform"
+                      />
+                    </div>
+                  )}
+
+                  <h3 className="font-heading text-lg font-bold text-[#3D352E] mb-1">
+                    {cert.officialTitle || cert.title}
                   </h3>
+
+                  {cert.date && (
+                    <p className="text-xs font-bold text-[#2E5A36] mb-2">
+                      📅 Date: {cert.date}
+                    </p>
+                  )}
 
                   <p className="text-sm text-[#7A6F66] leading-relaxed">
                     {cert.description}
@@ -512,7 +646,7 @@ export default function App() {
 
                 <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex items-center justify-between">
                   <span className="text-xs font-medium text-[#7A6F66]">
-                    Holder: Gwyneth Ashley Mucio
+                    Gwyneth Ashley Mucio
                   </span>
                   <button
                     type="button"
@@ -529,6 +663,199 @@ export default function App() {
           </div>
         </section>
 
+        {/* 💬 CONTACT & COMMENT SECTION (INTEGRATED FORMSPREE) */}
+        <section
+          id="contact"
+          className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
+        >
+          <div className="cozy-card p-6 sm:p-10 bg-gradient-to-br from-white via-[#FAF7F2] to-[#FCE1E4]/30">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              {/* Left Column: Direct Info */}
+              <div className="lg:col-span-5 space-y-5">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 rounded-full bg-[#FCE1E4] px-3.5 py-1 text-xs font-bold text-[#8A2E3B] mb-2">
+                    <img src="/heart.gif" alt="heart" className="w-4 h-4 object-contain inline-block" />
+                    <span>GET IN TOUCH</span>
+                  </div>
+                  <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
+                    Leave a Comment &amp; Connect 💬
+                  </h2>
+                  <p className="text-sm text-[#7A6F66] mt-2">
+                    Feel free to leave your thoughts, questions, or internship inquiries below! Messages are delivered directly to Gwyneth.
+                  </p>
+                </div>
+
+                <div className="space-y-3 text-sm text-[#3D352E]">
+                  <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-center gap-3">
+                    <Mail className="h-4 w-4 text-[#8A2E3B] shrink-0" />
+                    <div>
+                      <p className="text-xs font-bold text-[#7A6F66]">Email</p>
+                      <a
+                        href={`mailto:${PERSONAL_INFO_DATA.email}`}
+                        className="font-semibold text-[#8A2E3B] hover:underline"
+                      >
+                        {PERSONAL_INFO_DATA.email}
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-center gap-3">
+                    <Phone className="h-4 w-4 text-[#2E5A36] shrink-0" />
+                    <div>
+                      <p className="text-xs font-bold text-[#7A6F66]">Phone</p>
+                      <a
+                        href={`tel:${PERSONAL_INFO_DATA.phone}`}
+                        className="font-semibold hover:text-[#2E5A36]"
+                      >
+                        {PERSONAL_INFO_DATA.phone}
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-start gap-3">
+                    <MapPin className="h-4 w-4 text-[#7A5C12] shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-xs font-bold text-[#7A6F66]">Location</p>
+                      <p className="font-medium leading-snug">
+                        {PERSONAL_INFO_DATA.address}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  <a
+                    href={PERSONAL_INFO_DATA.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white border border-[#F0EAE1] px-4 py-2 text-xs font-bold text-[#3D352E] hover:border-[#2E5A36] transition-colors"
+                  >
+                    <img
+                      src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                      alt="GitHub"
+                      className="w-4 h-4"
+                    />
+                    <span>GitHub (@sdca-gwyneth-ashley-mucio)</span>
+                    <ExternalLink className="w-3 h-3 text-[#7A6F66]" />
+                  </a>
+
+                  <a
+                    href={PERSONAL_INFO_DATA.oldGithubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white border border-[#F0EAE1] px-4 py-2 text-xs font-bold text-[#7A6F66] hover:text-[#3D352E] hover:border-[#2E5A36] transition-colors"
+                  >
+                    <span>Personal GitHub (@gwynethashleymucio)</span>
+                    <ExternalLink className="w-3 h-3 text-[#7A6F66]" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Column: Working Comment Form */}
+              <div className="lg:col-span-7">
+                <form
+                  onSubmit={handleInPageCommentSubmit}
+                  className="rounded-3xl border border-[#F0EAE1] bg-white p-6 sm:p-8 space-y-4 shadow-sm"
+                >
+                  <h3 className="font-heading text-lg font-bold text-[#3D352E] flex items-center gap-2">
+                    <span>Leave a Thought</span>
+                    <img src="/heart.gif" alt="heart" className="w-5 h-5 object-contain" />
+                  </h3>
+
+                  {commentSuccess ? (
+                    <div className="rounded-2xl bg-[#D8E8D5] p-5 text-sm font-bold text-[#2E5A36] space-y-1">
+                      <p>✨ Thank you so much for your comment!</p>
+                      <p className="text-xs font-normal text-[#2E5A36]/90">
+                        Your message has been delivered to Gwyneth's inbox.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setCommentSuccess(false)}
+                        className="text-xs underline font-semibold mt-2 cursor-pointer block"
+                      >
+                        Send another thought
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label
+                            htmlFor="page-comment-name"
+                            className="block text-xs font-bold text-[#3D352E] mb-1.5"
+                          >
+                            Name <span className="text-[#8A2E3B]">*</span>
+                          </label>
+                          <input
+                            id="page-comment-name"
+                            type="text"
+                            required
+                            value={commentName}
+                            onChange={(e) => setCommentName(e.target.value)}
+                            placeholder="Your Name"
+                            className="w-full rounded-2xl border border-[#F0EAE1] bg-[#FAF7F2] px-4 py-2.5 text-sm text-[#3D352E] focus:bg-white focus:outline-none focus:border-[#2E5A36] transition-colors"
+                          />
+                        </div>
+
+                        <div>
+                          <label
+                            htmlFor="page-comment-email"
+                            className="block text-xs font-bold text-[#3D352E] mb-1.5"
+                          >
+                            Email <span className="text-[#8A2E3B]">*</span>
+                          </label>
+                          <input
+                            id="page-comment-email"
+                            type="email"
+                            required
+                            value={commentEmail}
+                            onChange={(e) => setCommentEmail(e.target.value)}
+                            placeholder="you@example.com"
+                            className="w-full rounded-2xl border border-[#F0EAE1] bg-[#FAF7F2] px-4 py-2.5 text-sm text-[#3D352E] focus:bg-white focus:outline-none focus:border-[#2E5A36] transition-colors"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="page-comment-msg"
+                          className="block text-xs font-bold text-[#3D352E] mb-1.5"
+                        >
+                          Message / Comment <span className="text-[#8A2E3B]">*</span>
+                        </label>
+                        <textarea
+                          id="page-comment-msg"
+                          rows={4}
+                          required
+                          value={commentMsg}
+                          onChange={(e) => setCommentMsg(e.target.value)}
+                          placeholder="Write your comment or message here..."
+                          className="w-full rounded-2xl border border-[#F0EAE1] bg-[#FAF7F2] px-4 py-2.5 text-sm text-[#3D352E] focus:bg-white focus:outline-none focus:border-[#2E5A36] transition-colors"
+                        />
+                      </div>
+
+                      {commentError && (
+                        <p className="text-xs font-bold text-[#8A2E3B]">
+                          {commentError}
+                        </p>
+                      )}
+
+                      <button
+                        type="submit"
+                        disabled={isSubmittingComment}
+                        className="spring-btn inline-flex items-center gap-2 rounded-full bg-[#FCE1E4] px-6 py-3 text-sm font-bold text-[#8A2E3B] hover:bg-[#f8cbd1] cursor-pointer disabled:opacity-50 shadow-xs"
+                      >
+                        <Send className="h-4 w-4" />
+                        <span>{isSubmittingComment ? 'Sending...' : 'Send Message 💬'}</span>
+                      </button>
+                    </>
+                  )}
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 🌸 COZY FOOTER */}
         <footer className="mx-auto max-w-7xl px-4 sm:px-6 pt-6">
           <div className="cozy-card p-6 sm:p-8 bg-white flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-[#7A6F66]">
@@ -542,13 +869,12 @@ export default function App() {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setActiveEvidenceId('ev-contact')}
-                className="hover:text-[#2E5A36] font-semibold cursor-pointer"
+              <a
+                href={`mailto:${PERSONAL_INFO_DATA.email}`}
+                className="hover:text-[#2E5A36] font-semibold"
               >
                 {PERSONAL_INFO_DATA.email}
-              </button>
+              </a>
               <span aria-hidden="true">·</span>
               <a
                 href={`tel:${PERSONAL_INFO_DATA.phone}`}
@@ -569,7 +895,7 @@ export default function App() {
         </footer>
       </main>
 
-      {/* Interactive Certificate, Capstone & One-Page Resume Lightbox Modal */}
+      {/* Lightbox Modal */}
       <EvidenceModal
         evidence={activeEvidencePayload}
         onClose={() => setActiveEvidenceId(null)}

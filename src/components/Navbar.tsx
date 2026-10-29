@@ -8,9 +8,11 @@ interface NavbarProps {
 const NAV_LINKS = [
   { label: 'About Me', href: '#about' },
   { label: 'Education', href: '#education' },
-  { label: 'Skills & Languages', href: '#skills' },
-  { label: 'Capstone Project', href: '#projects' },
+  { label: 'Tech Stack', href: '#tech-stack' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Capstone', href: '#projects' },
   { label: 'Certifications', href: '#certifications' },
+  { label: 'Contact', href: '#contact' },
 ];
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
@@ -18,32 +20,32 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
 
   return (
     <header className="sticky top-3 z-40 mx-auto max-w-7xl px-4 sm:px-6">
-      <div className="flex items-center justify-between gap-8 rounded-full border border-[#F0EAE1] bg-white/85 px-5 py-3 shadow-[0_8px_24px_-4px_rgba(61,53,46,0.06)] backdrop-blur-md">
-        {/* Zone 1: Brand Title */}
+      <div className="flex items-center justify-between gap-4 rounded-full border border-[#F0EAE1] bg-white/85 px-5 py-3 shadow-[0_8px_24px_-4px_rgba(61,53,46,0.06)] backdrop-blur-md">
+        {/* Brand */}
         <a
           href="#hero"
-          className="font-heading text-lg font-bold tracking-tight text-[#3D352E] whitespace-nowrap shrink-0 hover:text-[#2E5A36] transition-colors"
+          className="font-heading text-lg font-bold tracking-tight text-[#3D352E] whitespace-nowrap shrink-0 hover:text-[#2E5A36] transition-colors flex items-center gap-2"
         >
-          🍵 Gwyneth Ashley Mucio
+          <span>🍵 Gwyneth Ashley Mucio</span>
         </a>
 
-        {/* Zone 2: 5 Concise Single-Line Navigation Links */}
+        {/* Navigation Links */}
         <nav
           aria-label="Primary Portfolio Navigation"
-          className="hidden lg:flex items-center gap-6 text-sm font-semibold text-[#7A6F66]"
+          className="hidden lg:flex items-center gap-5 text-sm font-semibold text-[#7A6F66]"
         >
           {NAV_LINKS.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="hover:text-[#2E5A36] transition-colors whitespace-nowrap shrink-0 py-1 border-b-2 border-transparent hover:border-[#2E5A36]"
+              className="hover:text-[#2E5A36] transition-colors whitespace-nowrap py-1 border-b-2 border-transparent hover:border-[#2E5A36]"
             >
               {item.label}
             </a>
           ))}
         </nav>
 
-        {/* Zone 3: 1 Primary Action + Mobile Menu Trigger */}
+        {/* Action + Mobile Toggle */}
         <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
@@ -68,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume }) => {
       {/* Mobile Dropdown */}
       {mobileMenuOpen && (
         <div className="mt-2 rounded-3xl border border-[#F0EAE1] bg-white p-4 shadow-lg lg:hidden">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+          <div className="grid grid-cols-2 gap-1.5">
             {NAV_LINKS.map((sec) => (
               <a
                 key={sec.href}
