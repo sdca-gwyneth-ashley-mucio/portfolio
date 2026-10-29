@@ -6,9 +6,9 @@
     --bg-card: #FFFFFF;
     --border-delicate: #F0EAE1;
     --text-espresso: #3D352E;
-    --text-taupe: #7A6F66;
-    --matcha-bg: #D8E8D5;
-    --matcha-text: #2E5A36;
+    --text-taupe: #6B6057; /* Adjusted for enhanced WCAG AAA/AA contrast (5.8:1+) */
+    --matcha-bg: #FCE1E4;
+    --matcha-text: #8A2E3B;
     --blush-bg: #FCE1E4;
     --blush-text: #8A2E3B;
     --butter-bg: #FFF3B0;
@@ -17,6 +17,10 @@
     --lavender-text: #4A3570;
     --sky-bg: #E0E7FF;
     --sky-text: #2D3A8C;
+  }
+
+  html {
+    scroll-padding-top: 5.5rem; /* WCAG 2.2 SC 2.4.11: Focus Not Obscured by sticky header */
   }
 
   body {
@@ -28,6 +32,22 @@
 
   h1, h2, h3, h4, .font-heading {
     font-family: 'Quicksand', 'Plus Jakarta Sans', sans-serif;
+  }
+
+  /* WCAG 2.2 SC 2.4.7 Focus Visible & SC 2.4.13 Focus Appearance (AAA) */
+  :focus-visible {
+    outline: 2px solid #8A2E3B;
+    outline-offset: 2px;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2.5px solid #8A2E3B;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(138, 46, 59, 0.2);
   }
 }
 
@@ -96,14 +116,14 @@
   transform: scale(0.95);
 }
 
+/* WCAG 2.2 SC 2.3.3 Animation from Interactions & SC 2.2.2 Pause, Stop, Hide */
 @media (prefers-reduced-motion: reduce) {
-  .animate-float,
-  .animate-float-delayed,
-  .animate-float-fast,
-  .cozy-card,
-  .spring-btn {
-    animation: none !important;
-    transition: none !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
-

@@ -1,0 +1,44 @@
+# Gwyneth Ashley Mucio
+
+> Official digital garden and academic portfolio of Gwyneth Ashley Pacifico Mucio, Bachelor of Science in Information Technology (BSIT) student at St. Dominic College of Asia (SDCA), specializing in backend systems development, relational database engineering, and technical documentation.
+
+## Primary Links
+- [Portfolio Website](https://gwynethashleymucio.vercel.app/): Main academic portfolio and project showcase.
+- [Academic Resume (PDF)](https://gwynethashleymucio.vercel.app/Gwyneth_Ashley_Mucio_Resume.pdf): Official curriculum vitae and credentials.
+- [Academic GitHub Profile](https://github.com/sdca-gwyneth-ashley-mucio): Academic repositories and coursework.
+- [Personal GitHub Profile](https://github.com/gwynethashleymucio): Personal open-source projects.
+- [St. Dominic College of Asia](https://stdominiccollege.edu.ph): University institution and department.
+
+## Summary & Education
+- Degree: Bachelor of Science in Information Technology (BSIT)
+- Institution: St. Dominic College of Asia (Bacoor, Cavite, Philippines)
+- Period: 2023–Present
+- Senior High School: Humanities and Social Sciences (HUMSS), St. Michael's Institute, Inc. (2017–2023)
+- Focus Areas: Backend Development, Systems Analysis, Process Design, Database Management, Technical Writing.
+
+## Key Projects
+- **[SDCANTEEN](https://gwynethashleymucio.vercel.app/#projects)** (Completed Academic Project): Canteen Ordering Management System for SDCA Digital Campus.
+  - Role: Backend Developer.
+  - Functionality: Real-time daily menu browsing with price checks and inventory tracking, online order placement for organized pickup, staff operations suite for menu updates, stock management, order queueing, and sales tracking.
+- **[DC SPACE](https://gwynethashleymucio.vercel.app/#projects)** (Ongoing Capstone Project): AI-driven Event Intelligence Platform for Predictive Crowd Management and Adaptive Event Optimization.
+  - Role: Lead Technical Documentation.
+  - Functionality: Ingests event data streams, computes crowd density forecasts, and provides proactive event logistics adjustments for campus organizers.
+
+## Technical Skills & Stack
+- Programming Languages: Java, JavaScript, SQL, C, Dart, HTML5, CSS3.
+- Frameworks & Platforms: Flutter, Firebase, Oracle APEX.
+- Databases: Relational database architecture, SQL query design, database normalization.
+- Developer Tools: Visual Studio Code, Eclipse IDE, Apache NetBeans, Git, GitHub.
+- Soft Skills: Analytical thinking, detail orientation, clear communication, adaptable multitasking, team collaboration.
+
+## Verified Certifications
+- [Microsoft Office Specialist: Word Associate (Office 2019)](https://gwynethashleymucio.vercel.app/#certifications) — Issued March 14, 2024.
+- [Microsoft Office Specialist: PowerPoint Associate (Office 2019)](https://gwynethashleymucio.vercel.app/#certifications) — Issued May 30, 2024.
+- [Database Certification](https://gwynethashleymucio.vercel.app/#certifications) — Issued May 7, 2025.
+- HTML and CSS Certification.
+- Cybersecurity Fundamentals Certification.
+
+## Contact & Work Inquiries
+Gwyneth Ashley Mucio is open to software engineering internships, backend development roles, database administration traineeships, and academic collaborations.
+- Email: [mucioashley@gmail.com](mailto:mucioashley@gmail.com)
+- Portfolio Contact Form: [https://gwynethashleymucio.vercel.app/#contact](https://gwynethashleymucio.vercel.app/#contact)

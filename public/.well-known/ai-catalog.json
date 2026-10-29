@@ -1,0 +1,18 @@
+{
+  "specVersion": "1.0",
+  "entries": [
+    {
+      "identifier": "urn:air:gwynethashleymucio:portfolio:overview",
+      "displayName": "Gwyneth Ashley Mucio Portfolio Overview",
+      "description": "Portfolio and digital garden of Gwyneth Ashley Mucio, BSIT student and backend developer at St. Dominic College of Asia.",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
+      "url": "https://gwynethashleymucio.vercel.app/llms.txt",
+      "representativeQueries": [
+        "Gwyneth Ashley Mucio portfolio",
+        "BSIT student St. Dominic College of Asia",
+        "SDCANTEEN backend developer",
+        "DC SPACE technical documentation"
+      ]
+    }
+  ]
+}

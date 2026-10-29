@@ -80,7 +80,7 @@ export interface CertificationItem {
   title: string;
   categoryLabel: string;
   description: string;
-  badgeEmoji: string;
+  badgeEmoji?: string;
   /** Optional badge artwork shown on the card. */
   badgeImage?: string;
   /** Scan of the certificate. When missing, the card shows "Scan coming soon". */
@@ -273,7 +273,6 @@ export const CERTIFICATIONS_DATA: CertificationItem[] = [
     title: 'Microsoft Office Specialist: Word Associate (Office 2019)',
     categoryLabel: 'Documentation',
     description: 'Professional document creation, formatting, and structured technical documentation in Microsoft Word.',
-    badgeEmoji: '📄',
     badgeImage: '/msword-badge.png',
     certificateImage: '/WORD_2.png',
     date: 'March 14, 2024',
@@ -284,7 +283,6 @@ export const CERTIFICATIONS_DATA: CertificationItem[] = [
     title: 'Microsoft Office Specialist: PowerPoint Associate (Office 2019)',
     categoryLabel: 'Presentation',
     description: 'Designing clear, well-organized slide decks and visual presentations in Microsoft PowerPoint.',
-    badgeEmoji: '📊',
     badgeImage: '/ppt-badge.png',
     certificateImage: '/PPT_1.png',
     date: 'May 30, 2024',
@@ -295,7 +293,6 @@ export const CERTIFICATIONS_DATA: CertificationItem[] = [
     title: 'Database Certification',
     categoryLabel: 'Database',
     description: 'Relational database concepts and writing SQL queries to organize and retrieve data.',
-    badgeEmoji: '🗄️',
     badgeImage: '/DATABASE_3.png',
     certificateImage: '/DatabaseCertificate.png',
     date: 'May 7, 2025',
@@ -306,7 +303,6 @@ export const CERTIFICATIONS_DATA: CertificationItem[] = [
     title: 'HTML and CSS Certification',
     categoryLabel: 'Web',
     description: 'Structuring web content with HTML and styling layouts with CSS.',
-    badgeEmoji: '💻',
     // certificateImage: add the scan to /public and set the path here
     accent: 'blush',
   },
@@ -315,7 +311,6 @@ export const CERTIFICATIONS_DATA: CertificationItem[] = [
     title: 'Cybersecurity Certification',
     categoryLabel: 'Security',
     description: 'Core cybersecurity awareness, safe computing practices, and information protection.',
-    badgeEmoji: '🛡️',
     // certificateImage: add the scan to /public and set the path here
     accent: 'lavender',
   },

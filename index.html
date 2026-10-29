@@ -1,20 +1,204 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth scroll-pt-24">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gwyneth Ashley Mucio | BSIT Portfolio &amp; Digital Garden</title>
-    <meta name="description" content="Portfolio of Gwyneth Ashley Pacifico Mucio, Information Technology student at St. Dominic College of Asia featuring projects, technical stack, verified Microsoft & Database certifications, and contact information." />
+    
+    <!-- Standard SEO Meta Tags -->
+    <meta name="description" content="Official portfolio and digital garden of Gwyneth Ashley Pacifico Mucio, BSIT student and backend developer at St. Dominic College of Asia. Discover projects (SDCANTEEN, DC SPACE), verified certifications, and technical stack." />
+    <meta name="keywords" content="Gwyneth Ashley Mucio, Gwyneth Mucio, Gwyneth Ashley Pacifico Mucio, BSIT, St. Dominic College of Asia, SDCA, SDCANTEEN, DC SPACE, Backend Developer, Systems Analysis, Java, SQL, Oracle APEX, Flutter, Bacoor Cavite, Student Portfolio" />
+    <meta name="author" content="Gwyneth Ashley Pacifico Mucio" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#FAF7F2" />
+    <link rel="canonical" href="https://gwynethashleymucio.vercel.app/" />
+
+    <!-- Open Graph / Facebook / LinkedIn / Discord -->
+    <meta property="og:site_name" content="Gwyneth Ashley Mucio Portfolio" />
     <meta property="og:title" content="Gwyneth Ashley Mucio | BSIT Portfolio &amp; Digital Garden" />
-    <meta property="og:description" content="Portfolio of Gwyneth Ashley Pacifico Mucio, Information Technology student at St. Dominic College of Asia." />
-    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Official portfolio of Gwyneth Ashley Pacifico Mucio — BSIT student at St. Dominic College of Asia, backend developer of SDCANTEEN, and documentation lead for DC SPACE." />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://gwynethashleymucio.vercel.app/" />
+    <meta property="og:image" content="https://gwynethashleymucio.vercel.app/mucio.JPG" />
+    <meta property="og:image:alt" content="Portrait of Gwyneth Ashley Mucio, BSIT Student at SDCA" />
+    <meta property="og:locale" content="en_PH" />
+    <meta property="profile:first_name" content="Gwyneth Ashley" />
+    <meta property="profile:last_name" content="Mucio" />
+    <meta property="profile:username" content="sdca-gwyneth-ashley-mucio" />
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍵</text></svg>" />
+    <meta name="twitter:title" content="Gwyneth Ashley Mucio | BSIT Portfolio &amp; Digital Garden" />
+    <meta name="twitter:description" content="BSIT student at St. Dominic College of Asia, backend developer for SDCANTEEN, and documentation lead for DC SPACE." />
+    <meta name="twitter:image" content="https://gwynethashleymucio.vercel.app/mucio.JPG" />
+
+    <!-- GEO & AI Agent Discovery -->
+    <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM Context Summary" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" title="Sitemap" />
+
+    <!-- Favicon & Web Manifest -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet" />
+
+    <!-- Schema.org JSON-LD (SEO + GEO + AEO Knowledge Graph) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://gwynethashleymucio.vercel.app/#website",
+          "url": "https://gwynethashleymucio.vercel.app/",
+          "name": "Gwyneth Ashley Mucio Portfolio",
+          "description": "Academic portfolio and digital garden of Gwyneth Ashley Mucio, BSIT student and backend developer.",
+          "inLanguage": "en-PH"
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://gwynethashleymucio.vercel.app/#webpage",
+          "url": "https://gwynethashleymucio.vercel.app/",
+          "name": "Gwyneth Ashley Mucio | BSIT Portfolio & Digital Garden",
+          "isPartOf": { "@id": "https://gwynethashleymucio.vercel.app/#website" },
+          "about": { "@id": "https://gwynethashleymucio.vercel.app/#person" },
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": "https://gwynethashleymucio.vercel.app/mucio.JPG",
+            "caption": "Gwyneth Ashley Mucio Portrait"
+          }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://gwynethashleymucio.vercel.app/#person",
+          "name": "Gwyneth Ashley Mucio",
+          "alternateName": ["Gwyneth Ashley Pacifico Mucio", "Gwyneth Mucio"],
+          "jobTitle": "BS Information Technology Student & Backend Developer",
+          "gender": "Female",
+          "url": "https://gwynethashleymucio.vercel.app/",
+          "image": "https://gwynethashleymucio.vercel.app/mucio.JPG",
+          "email": "mucioashley@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bacoor City",
+            "addressRegion": "Cavite",
+            "addressCountry": "PH"
+          },
+          "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "St. Michael's Institute, Inc."
+          },
+          "affiliation": {
+            "@type": "CollegeOrUniversity",
+            "name": "St. Dominic College of Asia",
+            "url": "https://stdominiccollege.edu.ph"
+          },
+          "sameAs": [
+            "https://github.com/sdca-gwyneth-ashley-mucio",
+            "https://github.com/gwynethashleymucio"
+          ],
+          "knowsAbout": [
+            "Backend Development",
+            "Database Management",
+            "SQL",
+            "Java",
+            "JavaScript",
+            "Dart",
+            "Flutter",
+            "Firebase",
+            "Oracle APEX",
+            "Systems Analysis",
+            "Process Design",
+            "Technical Documentation"
+          ],
+          "hasCredential": [
+            {
+              "@type": "EducationalOccupationalCredential",
+              "name": "Microsoft Office Specialist: Word Associate (Office 2019)",
+              "credentialCategory": "Certification",
+              "recognizedBy": {
+                "@type": "Organization",
+                "name": "Microsoft"
+              },
+              "dateCreated": "2024-03-14"
+            },
+            {
+              "@type": "EducationalOccupationalCredential",
+              "name": "Microsoft Office Specialist: PowerPoint Associate (Office 2019)",
+              "credentialCategory": "Certification",
+              "recognizedBy": {
+                "@type": "Organization",
+                "name": "Microsoft"
+              },
+              "dateCreated": "2024-05-30"
+            },
+            {
+              "@type": "EducationalOccupationalCredential",
+              "name": "Database Certification",
+              "credentialCategory": "Certification",
+              "dateCreated": "2025-05-07"
+            }
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "name": "SDCANTEEN",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web",
+          "description": "Canteen Ordering Management System for the SDCA Digital Campus.",
+          "author": { "@id": "https://gwynethashleymucio.vercel.app/#person" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://gwynethashleymucio.vercel.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Who is Gwyneth Ashley Mucio?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Gwyneth Ashley Pacifico Mucio is a Bachelor of Science in Information Technology (BSIT) student at St. Dominic College of Asia (SDCA) specializing in backend systems development, database management, and technical documentation."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What projects has Gwyneth Ashley Mucio developed?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Gwyneth served as the Backend Developer for SDCANTEEN (a canteen ordering management system for SDCA Digital Campus) and currently leads technical documentation for DC SPACE (an AI-driven event intelligence capstone platform)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What programming languages and frameworks does Gwyneth Ashley Mucio use?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Gwyneth's technical stack includes Java, JavaScript, SQL, C, HTML5, CSS3, and Dart, alongside frameworks and platforms including Flutter, Firebase, and Oracle APEX."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What certifications does Gwyneth Ashley Mucio hold?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Gwyneth holds verified certifications as a Microsoft Office Specialist: Word Associate (Office 2019), Microsoft Office Specialist: PowerPoint Associate (Office 2019), Database Certification (SQL), HTML and CSS Certification, and Cybersecurity Fundamentals."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How can I contact Gwyneth Ashley Mucio for internships or software projects?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "You can contact Gwyneth via email at mucioashley@gmail.com, view her GitHub at https://github.com/sdca-gwyneth-ashley-mucio, or download her resume directly from https://gwynethashleymucio.vercel.app/Gwyneth_Ashley_Mucio_Resume.pdf."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
-  <body class="bg-[#FAF7F2] text-[#3D352E] antialiased selection:bg-[#D8E8D5] selection:text-[#2E5A36]">
+  <body class="bg-[#FAF7F2] text-[#3D352E] antialiased selection:bg-[#FCE1E4] selection:text-[#8A2E3B]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
