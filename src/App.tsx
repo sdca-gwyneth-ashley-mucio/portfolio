@@ -1,32 +1,33 @@
 import React, { useState } from 'react';
 import {
-  CAPSTONE_PROJECT_DATA,
   CERTIFICATIONS_DATA,
   EDUCATIONAL_BACKGROUND_DATA,
   LANGUAGES_DATA,
   PERSONAL_INFO_DATA,
-  SKILLS_DATA,
+  PROJECTS_DATA,
+  PROFESSIONAL_SKILLS,
+  TECHNICAL_SKILLS,
+  TECH_STACK_CATEGORIES,
   TECH_STACK_DATA,
-  SkillCategoryFilter,
+  type CertificationItem,
 } from './data/portfolioData';
-import {
-  filterSkillsByCategory,
-  getEvidenceById,
-} from './utils/portfolioLogic';
+import { getTechByCategory, getViewableCertificate } from './utils/portfolioLogic';
 import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
-import { EvidenceModal } from './components/EvidenceModal';
+import { ContactForm } from './components/ContactForm';
+import { CertificateModal } from './components/CertificateModal';
 import {
   GraduationCap,
-  Sparkles,
   Globe2,
   CheckCircle2,
-  Phone,
   Mail,
   MapPin,
   BookOpen,
-  Send,
   ExternalLink,
+  Code2,
+  FileCheck2,
+  FolderGit2,
+  FileDown,
 } from 'lucide-react';
 
 const PASTEL_PILL_CLASSES: Record<
@@ -40,82 +41,24 @@ const PASTEL_PILL_CLASSES: Record<
   sky: 'bg-[#E0E7FF] text-[#2D3A8C]',
 };
 
-const SKILL_CATEGORIES: SkillCategoryFilter[] = [
-  'All Skills',
-  'Professional Skills',
-  'Academic & Technical Foundations',
-];
-
 export default function App() {
-  const [selectedSkillCategory, setSelectedSkillCategory] =
-    useState<SkillCategoryFilter>('All Skills');
-  const [activeEvidenceId, setActiveEvidenceId] = useState<string | null>(null);
+  const [activeCertificate, setActiveCertificate] = useState<CertificationItem | null>(null);
 
-  // In-page contact/comment form state
-  const [commentName, setCommentName] = useState('');
-  const [commentEmail, setCommentEmail] = useState('');
-  const [commentMsg, setCommentMsg] = useState('');
-  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
-  const [commentSuccess, setCommentSuccess] = useState(false);
-  const [commentError, setCommentError] = useState<string | null>(null);
-
-  const filteredSkills = filterSkillsByCategory(
-    SKILLS_DATA,
-    selectedSkillCategory
-  );
-
-  const activeEvidencePayload = activeEvidenceId
-    ? getEvidenceById(activeEvidenceId)
-    : null;
-
-  const handleInPageCommentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!commentName.trim() || !commentEmail.trim() || !commentMsg.trim()) {
-      setCommentError('Please fill in your name, email, and thoughts.');
-      return;
-    }
-
-    try {
-      setIsSubmittingComment(true);
-      setCommentError(null);
-      const res = await fetch(PERSONAL_INFO_DATA.formspreeUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          name: commentName,
-          email: commentEmail,
-          message: commentMsg,
-        }),
-      });
-
-      if (res.ok) {
-        setCommentSuccess(true);
-        setCommentName('');
-        setCommentEmail('');
-        setCommentMsg('');
-      } else {
-        setCommentError('Message could not be sent. You can email Gwyneth directly at ' + PERSONAL_INFO_DATA.email);
-      }
-    } catch {
-      setCommentSuccess(true);
-    } finally {
-      setIsSubmittingComment(false);
+  const handleOpenCertificate = (id: string) => {
+    const cert = getViewableCertificate(id);
+    if (cert) {
+      setActiveCertificate(cert);
     }
   };
 
-  const techCategories = ['Languages', 'Environment / IDE', 'Tools & Platform'] as const;
-
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#3D352E] pb-16">
+    <div className="min-h-screen bg-[#FAF7F2] text-[#3D352E] pb-16 selection:bg-[#D8E8D5] selection:text-[#2E5A36]">
       {/* Sticky Navigation Bar */}
-      <Navbar onOpenResume={() => setActiveEvidenceId('ev-resume')} />
+      <Navbar />
 
       <main className="space-y-16 sm:space-y-20">
         {/* 🌸 HERO SECTION */}
-        <HeroSection onOpenEvidence={(id) => setActiveEvidenceId(id)} />
+        <HeroSection />
 
         {/* ✨ ABOUT ME SECTION */}
         <section
@@ -124,15 +67,15 @@ export default function App() {
         >
           <div className="mb-6">
             <span className="inline-block rounded-full bg-[#D8E8D5] px-3.5 py-1 text-xs font-bold text-[#2E5A36] mb-2">
-              🌱 ABOUT ME · PERSONAL PROFILE
+              🌱 ABOUT ME
             </span>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
-              About Me
+              Personal Profile &amp; Background
             </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            {/* Story Prose with Picture */}
+            {/* Story Prose Card with Picture */}
             <div className="lg:col-span-8 cozy-card p-6 sm:p-9 flex flex-col justify-between">
               <div className="flex flex-col sm:flex-row gap-6 items-start">
                 <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden border-2 border-[#D8E8D5] shadow-sm shrink-0 bg-[#FAF7F2] mx-auto sm:mx-0">
@@ -142,85 +85,82 @@ export default function App() {
                     className="w-full h-full object-cover object-center"
                   />
                 </div>
-                <div className="space-y-4 text-base sm:text-lg text-[#3D352E] leading-relaxed">
-                  <p>
-                    {PERSONAL_INFO_DATA.summarySentences[0]}
-                  </p>
-                  <p>
-                    {PERSONAL_INFO_DATA.summarySentences[1]}
-                  </p>
-                  <p>
-                    {PERSONAL_INFO_DATA.summarySentences[2]}
-                  </p>
+                <div className="space-y-3.5 text-base sm:text-lg text-[#3D352E] leading-relaxed">
+                  {PERSONAL_INFO_DATA.summary.map((paragraph, idx) => (
+                    <p key={idx}>{paragraph}</p>
+                  ))}
                 </div>
               </div>
 
               <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex flex-wrap items-center justify-between gap-3 text-xs text-[#7A6F66]">
-                <span>
-                  ✨ Friendly · Sweet · Caring · Multitasking · Adaptable · Creative
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setActiveEvidenceId('ev-resume')}
-                  className="spring-btn rounded-full bg-[#D8E8D5] px-4 py-1.5 font-bold text-[#2E5A36] cursor-pointer"
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="font-semibold text-[#3D352E]">Key Strengths:</span>
+                  {PERSONAL_INFO_DATA.traits.map((trait) => (
+                    <span
+                      key={trait}
+                      className="rounded-full bg-[#FAF7F2] border border-[#F0EAE1] px-2.5 py-0.5 font-medium text-[#2E5A36]"
+                    >
+                      {trait}
+                    </span>
+                  ))}
+                </div>
+                <a
+                  href={PERSONAL_INFO_DATA.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="spring-btn inline-flex items-center gap-1.5 rounded-full bg-[#D8E8D5] px-3.5 py-1.5 font-bold text-[#2E5A36] hover:bg-[#c8dfc4]"
                 >
-                  [ 📄 Open One-Page Resume ]
-                </button>
+                  <FileDown className="h-3.5 w-3.5" aria-hidden="true" />
+                  View Resume (PDF)
+                </a>
               </div>
             </div>
 
-            {/* Direct Contact Details Card */}
+            {/* Quick Facts Card (Clean, non-repetitive) */}
             <div className="lg:col-span-4 cozy-card p-6 sm:p-8 bg-gradient-to-br from-white to-[#FCE1E4]/25 flex flex-col justify-between">
               <div>
                 <span className="inline-block rounded-full bg-[#FCE1E4] px-3 py-1 text-xs font-bold text-[#8A2E3B] mb-3">
-                  📇 Personal Information
+                  📇 Quick Facts
                 </span>
                 <h3 className="font-heading text-xl font-bold text-[#3D352E] mb-4">
-                  Direct Contact Details
+                  Academic &amp; Student Overview
                 </h3>
 
-                <div className="space-y-3.5 text-sm text-[#3D352E]">
+                <div className="space-y-3 text-sm text-[#3D352E]">
                   <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5">
-                    <p className="text-xs font-bold text-[#7A6F66] mb-0.5">
-                      Full Name
+                    <p className="text-xs font-bold text-[#7A6F66] mb-0.5">Program</p>
+                    <p className="font-heading font-bold text-sm text-[#3D352E]">
+                      BS in Information Technology (BSIT)
                     </p>
-                    <p className="font-heading font-bold text-base text-[#3D352E]">
-                      {PERSONAL_INFO_DATA.extendedFullName}
+                    <p className="text-xs text-[#2E5A36] mt-0.5">
+                      {PERSONAL_INFO_DATA.institution}
                     </p>
                   </div>
 
                   <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-center gap-3">
-                    <Phone className="h-4 w-4 text-[#2E5A36] shrink-0" />
+                    <MapPin className="h-4 w-4 text-[#7A5C12] shrink-0" aria-hidden="true" />
                     <div>
-                      <p className="text-xs font-bold text-[#7A6F66]">Phone</p>
-                      <a
-                        href={`tel:${PERSONAL_INFO_DATA.phone}`}
-                        className="font-semibold hover:text-[#2E5A36] tabular-nums"
-                      >
-                        {PERSONAL_INFO_DATA.phone}
-                      </a>
+                      <p className="text-xs font-bold text-[#7A6F66]">Location</p>
+                      <p className="font-semibold">{PERSONAL_INFO_DATA.publicLocation}</p>
                     </div>
                   </div>
 
                   <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-center gap-3">
-                    <Mail className="h-4 w-4 text-[#8A2E3B] shrink-0" />
+                    <Globe2 className="h-4 w-4 text-[#2D3A8C] shrink-0" aria-hidden="true" />
                     <div>
-                      <p className="text-xs font-bold text-[#7A6F66]">Email</p>
-                      <a
-                        href={`mailto:${PERSONAL_INFO_DATA.email}`}
-                        className="font-semibold text-[#8A2E3B] hover:underline break-all"
-                      >
-                        {PERSONAL_INFO_DATA.email}
-                      </a>
+                      <p className="text-xs font-bold text-[#7A6F66]">Languages</p>
+                      <p className="font-semibold text-xs text-[#3D352E]">
+                        Tagalog (Native) · English (Intermediate)
+                      </p>
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-start gap-3">
-                    <MapPin className="h-4 w-4 text-[#7A5C12] shrink-0 mt-1" />
+                  <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-center gap-3">
+                    <Code2 className="h-4 w-4 text-[#2E5A36] shrink-0" aria-hidden="true" />
                     <div>
-                      <p className="text-xs font-bold text-[#7A6F66]">Address</p>
-                      <p className="font-medium leading-snug">
-                        {PERSONAL_INFO_DATA.address}
+                      <p className="text-xs font-bold text-[#7A6F66]">Core Focus</p>
+                      <p className="font-semibold text-xs text-[#3D352E]">
+                        Backend Development · Systems Analysis · Databases
                       </p>
                     </div>
                   </div>
@@ -259,7 +199,7 @@ export default function App() {
                         PASTEL_PILL_CLASSES[edu.accent]
                       }`}
                     >
-                      <GraduationCap className="h-4 w-4" />
+                      <GraduationCap className="h-4 w-4" aria-hidden="true" />
                       {edu.statusBadge}
                     </span>
                     <span className="rounded-full bg-[#FAF7F2] border border-[#F0EAE1] px-3.5 py-1 text-xs font-bold text-[#3D352E] tabular-nums">
@@ -268,7 +208,7 @@ export default function App() {
                   </div>
 
                   <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#3D352E] mb-2">
-                    {index + 1}. {edu.degreeOrTrack}
+                    {edu.degreeOrTrack}
                   </h3>
 
                   <p className="text-base font-bold text-[#2E5A36]">
@@ -283,16 +223,16 @@ export default function App() {
                   {edu.coursework && edu.coursework.length > 0 && (
                     <div className="mt-6 pt-5 border-t border-[#F0EAE1]">
                       <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66] mb-3 flex items-center gap-1.5">
-                        <BookOpen className="h-4 w-4 text-[#2E5A36]" />
+                        <BookOpen className="h-4 w-4 text-[#2E5A36]" aria-hidden="true" />
                         Relevant Coursework:
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                         {edu.coursework.map((course) => (
                           <div
                             key={course}
-                            className="rounded-2xl bg-[#FAF7F2] border border-[#F0EAE1] px-3.5 py-2.5 text-sm font-semibold text-[#3D352E] flex items-center gap-2"
+                            className="rounded-2xl bg-[#FAF7F2] border border-[#F0EAE1] px-3.5 py-2 text-xs sm:text-sm font-semibold text-[#3D352E] flex items-center gap-2"
                           >
-                            <CheckCircle2 className="h-4 w-4 text-[#2E5A36] shrink-0" />
+                            <CheckCircle2 className="h-4 w-4 text-[#2E5A36] shrink-0" aria-hidden="true" />
                             <span>{course}</span>
                           </div>
                         ))}
@@ -304,7 +244,7 @@ export default function App() {
                 <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex items-center justify-between text-xs text-[#7A6F66]">
                   <span>Academic Record #{index + 1}</span>
                   <span className="font-semibold text-[#2E5A36]">
-                    ✓ St. Dominic College of Asia
+                    ✓ Verified Academic History
                   </span>
                 </div>
               </article>
@@ -312,7 +252,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* 💻 TECH STACK SECTION (FROM OLD PORTFOLIO) */}
+        {/* 💻 TECH STACK SECTION */}
         <section
           id="tech-stack"
           className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
@@ -325,17 +265,17 @@ export default function App() {
               Technology Stack
             </h2>
             <p className="text-sm text-[#7A6F66] mt-1">
-              Programming languages, developer environments, and tools used across academic projects and software development.
+              Programming languages, frameworks, and developer tools used across coursework and software projects.
             </p>
           </div>
 
           <div className="space-y-6">
-            {techCategories.map((category) => {
-              const items = TECH_STACK_DATA.filter((i) => i.category === category);
+            {TECH_STACK_CATEGORIES.map((category) => {
+              const items = getTechByCategory(TECH_STACK_DATA, category);
               return (
                 <div key={category} className="cozy-card p-6 sm:p-8">
-                  <h3 className="font-heading text-lg font-bold text-[#2E5A36] mb-4 flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#2E5A36]"></span>
+                  <h3 className="font-heading text-base sm:text-lg font-bold text-[#2E5A36] mb-4 flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#2E5A36]" aria-hidden="true"></span>
                     {category}
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -347,7 +287,8 @@ export default function App() {
                         <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
                           <img
                             src={tool.iconUrl}
-                            alt={tool.name}
+                            alt=""
+                            aria-hidden="true"
                             className="max-w-10 max-h-10 object-contain"
                           />
                         </div>
@@ -363,222 +304,199 @@ export default function App() {
           </div>
         </section>
 
-        {/* 💡 SKILLS & SPOKEN LANGUAGES SECTION */}
-        <section
-          id="skills"
-          className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
-        >
-          <div className="mb-6 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
-            <div>
-              <span className="inline-block rounded-full bg-[#EDE7F6] px-3.5 py-1 text-xs font-bold text-[#4A3570] mb-2">
-                💡 COMPETENCIES &amp; COMMUNICATION
-              </span>
-              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
-                Skills &amp; Languages
-              </h2>
-            </div>
-
-            {/* Filter Buttons */}
-            <div
-              role="group"
-              aria-label="Filter skills by category"
-              className="flex flex-wrap items-center gap-2"
-            >
-              {SKILL_CATEGORIES.map((category) => {
-                const isActive = selectedSkillCategory === category;
-                return (
-                  <button
-                    key={category}
-                    type="button"
-                    onClick={() => setSelectedSkillCategory(category)}
-                    aria-pressed={isActive}
-                    className={`spring-btn rounded-full px-4 py-2 text-xs sm:text-sm font-bold whitespace-nowrap shrink-0 cursor-pointer ${
-                      isActive
-                        ? 'bg-[#3D352E] text-white shadow-sm'
-                        : 'bg-white border border-[#F0EAE1] text-[#7A6F66] hover:text-[#3D352E] hover:bg-[#FAF7F2]'
-                    }`}
-                  >
-                    {category}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Skills Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-            {filteredSkills.map((skill) => (
-              <article
-                key={skill.id}
-                className="cozy-card p-6 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-bold ${
-                        PASTEL_PILL_CLASSES[skill.accent]
-                      }`}
-                    >
-                      {skill.category}
-                    </span>
-                  </div>
-                  <h3 className="font-heading text-lg font-bold text-[#3D352E] mb-2">
-                    {skill.name}
-                  </h3>
-                  <p className="text-sm text-[#7A6F66] leading-relaxed">
-                    {skill.description}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          {/* Languages Sub-Section */}
-          <div className="cozy-card p-6 sm:p-8 bg-gradient-to-r from-white via-[#FAF7F2] to-[#E0E7FF]/30">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
-              <div>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E0E7FF] px-3 py-1 text-xs font-bold text-[#2D3A8C] mb-1.5">
-                  <Globe2 className="h-3.5 w-3.5" />
-                  LANGUAGES
-                </span>
-                <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#3D352E]">
-                  Spoken &amp; Written Languages
-                </h3>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {LANGUAGES_DATA.map((lang) => (
-                <div
-                  key={lang.id}
-                  className="rounded-2xl bg-white border border-[#F0EAE1] p-5 flex items-start justify-between gap-4"
-                >
-                  <div>
-                    <p className="font-heading text-lg font-bold text-[#3D352E]">
-                      {lang.language} –{' '}
-                      <span className="text-[#2E5A36]">{lang.proficiency}</span>
-                    </p>
-                    <p className="text-sm text-[#7A6F66] mt-1">
-                      {lang.description}
-                    </p>
-                  </div>
-                  <span
-                    className={`rounded-full px-3.5 py-1 text-xs font-bold shrink-0 ${
-                      PASTEL_PILL_CLASSES[lang.accent]
-                    }`}
-                  >
-                    {lang.proficiency}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 🚀 CAPSTONE PROJECT SECTION */}
+        {/* 🚀 PROJECTS SECTION (SDCANTEEN COMPLETED + DC SPACE CAPSTONE ONGOING) */}
         <section
           id="projects"
           className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
         >
-          <div className="mb-6">
+          <div className="mb-8">
             <span className="inline-block rounded-full bg-[#D8E8D5] px-3.5 py-1 text-xs font-bold text-[#2E5A36] mb-2">
-              🚀 PROJECTS · CAPSTONE SHOWCASE
+              🚀 FEATURED PROJECTS
             </span>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
-              Capstone Project
+              Projects &amp; Systems
             </h2>
+            <p className="text-sm text-[#7A6F66] mt-1">
+              Practical software development and academic capstone systems with confirmed roles and progress statuses.
+            </p>
           </div>
 
-          <div className="cozy-card p-6 sm:p-10 bg-gradient-to-br from-white via-white to-[#D8E8D5]/25">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-4">
-                <div className="inline-flex items-center gap-2 rounded-full bg-[#FFF3B0] px-4 py-1 text-xs font-bold text-[#7A5C12]">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  Project Type: {CAPSTONE_PROJECT_DATA.projectType}
-                </div>
-
-                <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E] leading-snug">
-                  {CAPSTONE_PROJECT_DATA.title}
-                </h3>
-
-                <p className="text-base sm:text-lg text-[#3D352E] leading-relaxed">
-                  {CAPSTONE_PROJECT_DATA.description}
-                </p>
-
-                <div className="pt-2">
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66] mb-2.5">
-                    Key Capstone Focus Pillars:
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {CAPSTONE_PROJECT_DATA.coreFocusAreas.map((pillar) => (
-                      <span
-                        key={pillar}
-                        className="rounded-full bg-white border border-[#F0EAE1] px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-[#2E5A36]"
-                      >
-                        ✓ {pillar}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {PROJECTS_DATA.map((proj) => {
+              const isCompleted = proj.status === 'Completed';
+              return (
+                <article
+                  key={proj.id}
+                  className="cozy-card p-6 sm:p-8 flex flex-col justify-between bg-gradient-to-br from-white via-white to-[#FAF7F2]"
+                >
+                  <div>
+                    {/* Header Badges */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-full bg-[#3D352E] px-3 py-1 text-xs font-bold text-white">
+                          Role: {proj.role}
+                        </span>
+                        <span
+                          className={`rounded-full px-3 py-1 text-xs font-bold ${
+                            isCompleted ? 'bg-[#D8E8D5] text-[#2E5A36]' : 'bg-[#FFF3B0] text-[#7A5C12]'
+                          }`}
+                        >
+                          {isCompleted ? '✓ Completed' : '🔄 Ongoing'}
+                        </span>
+                      </div>
+                      <span className="text-xs font-bold text-[#7A6F66]">
+                        {proj.projectType}
                       </span>
-                    ))}
-                  </div>
-                </div>
+                    </div>
 
-                <div className="pt-3">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setActiveEvidenceId(CAPSTONE_PROJECT_DATA.evidenceId)
-                    }
-                    className="spring-btn rounded-full bg-[#3D352E] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#2E5A36] cursor-pointer"
+                    <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#3D352E] mb-1">
+                      {proj.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm font-semibold text-[#2E5A36] mb-3">
+                      {proj.subtitle}
+                    </p>
+
+                    <p className="text-sm text-[#3D352E] leading-relaxed mb-5">
+                      {proj.description}
+                    </p>
+
+                    {/* Features list */}
+                    <div className="space-y-2 pt-3 border-t border-[#F0EAE1]">
+                      <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66]">
+                        Key Features &amp; Modules:
+                      </p>
+                      <ul className="space-y-1.5 text-xs sm:text-sm text-[#3D352E]">
+                        {proj.features.map((feat, idx) => (
+                          <li key={idx} className="flex items-start gap-2">
+                            <span className="text-[#2E5A36] font-bold mt-0.5">✓</span>
+                            <span>{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex items-center justify-between text-xs text-[#7A6F66]">
+                    <span className="inline-flex items-center gap-1 font-medium">
+                      <FolderGit2 className="h-3.5 w-3.5 text-[#2E5A36]" aria-hidden="true" />
+                      SDCA Academic Project
+                    </span>
+                    <span className="font-semibold text-[#2E5A36]">
+                      {proj.role}
+                    </span>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* 💡 SKILLS SECTION */}
+        <section
+          id="skills"
+          className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
+        >
+          <div className="mb-8">
+            <span className="inline-block rounded-full bg-[#EDE7F6] px-3.5 py-1 text-xs font-bold text-[#4A3570] mb-2">
+              💡 COMPETENCIES
+            </span>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
+              Skills &amp; Evidence
+            </h2>
+            <p className="text-sm text-[#7A6F66] mt-1">
+              Technical foundations tied to coursework and projects, complemented by professional collaboration skills.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Left 7 cols: Technical skills with evidence */}
+            <div className="lg:col-span-7 space-y-4">
+              <h3 className="font-heading text-lg font-bold text-[#3D352E] flex items-center gap-2">
+                <Code2 className="h-5 w-5 text-[#2E5A36]" aria-hidden="true" />
+                Technical Competencies with Evidence
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {TECHNICAL_SKILLS.map((skill) => (
+                  <div
+                    key={skill.id}
+                    className="cozy-card p-5 flex flex-col justify-between"
                   >
-                    [ 📊 View Capstone Intelligence Workflow ]
-                  </button>
+                    <div>
+                      <span
+                        className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold mb-2 ${
+                          PASTEL_PILL_CLASSES[skill.accent]
+                        }`}
+                      >
+                        Technical Skill
+                      </span>
+                      <h4 className="font-heading text-base font-bold text-[#3D352E] mb-1.5">
+                        {skill.name}
+                      </h4>
+                      <p className="text-xs text-[#7A6F66] leading-relaxed">
+                        {skill.evidence}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right 5 cols: Professional skills + Languages */}
+            <div className="lg:col-span-5 space-y-6">
+              {/* Professional skills chips */}
+              <div className="cozy-card p-6">
+                <h3 className="font-heading text-lg font-bold text-[#3D352E] mb-2">
+                  Professional &amp; Soft Skills
+                </h3>
+                <p className="text-xs text-[#7A6F66] mb-4">
+                  Core collaboration and work habits developed through academic team tasks and project deliveries.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {PROFESSIONAL_SKILLS.map((skill) => (
+                    <span
+                      key={skill}
+                      className="rounded-full bg-[#FAF7F2] border border-[#F0EAE1] px-3.5 py-1.5 text-xs font-bold text-[#3D352E] hover:border-[#2E5A36]/40 transition-colors"
+                    >
+                      {skill}
+                    </span>
+                  ))}
                 </div>
               </div>
 
-              {/* Architecture Card */}
-              <div className="lg:col-span-5 rounded-3xl border border-[#F0EAE1] bg-[#FAF7F2] p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#2E5A36]">
-                    ✨ {CAPSTONE_PROJECT_DATA.shortTitle} Overview
-                  </span>
-                  <span className="rounded-full bg-[#D8E8D5] px-3 py-0.5 text-xs font-bold text-[#2E5A36]">
-                    {CAPSTONE_PROJECT_DATA.projectType}
-                  </span>
+              {/* Languages */}
+              <div className="cozy-card p-6 bg-gradient-to-r from-white via-[#FAF7F2] to-[#E0E7FF]/25">
+                <div className="flex items-center gap-2 mb-3">
+                  <Globe2 className="h-4 w-4 text-[#2D3A8C]" aria-hidden="true" />
+                  <h3 className="font-heading text-lg font-bold text-[#3D352E]">
+                    Spoken &amp; Written Languages
+                  </h3>
                 </div>
-
-                <div className="space-y-3">
-                  <div className="rounded-2xl bg-white border border-[#F0EAE1] p-4">
-                    <p className="text-xs font-bold text-[#2D3A8C] mb-1">
-                      01 · Event-Related Data Analysis
-                    </p>
-                    <p className="text-xs text-[#7A6F66]">
-                      Processes event-related data to uncover patterns that inform crowd flow and venue readiness.
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl bg-white border border-[#F0EAE1] p-4">
-                    <p className="text-xs font-bold text-[#8A2E3B] mb-1">
-                      02 · Predictive Crowd Management
-                    </p>
-                    <p className="text-xs text-[#7A6F66]">
-                      Forecasts crowd conditions to assist organizers in proactive safety and congestion prevention.
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl bg-white border border-[#F0EAE1] p-4">
-                    <p className="text-xs font-bold text-[#2E5A36] mb-1">
-                      03 · Adaptive Event Optimization
-                    </p>
-                    <p className="text-xs text-[#7A6F66]">
-                      Delivers data-driven insights to strengthen event planning and overall operational efficiency.
-                    </p>
-                  </div>
+                <div className="grid grid-cols-2 gap-3">
+                  {LANGUAGES_DATA.map((lang) => (
+                    <div
+                      key={lang.id}
+                      className="rounded-2xl bg-white border border-[#F0EAE1] p-3 text-center"
+                    >
+                      <p className="font-heading text-sm font-bold text-[#3D352E]">
+                        {lang.language}
+                      </p>
+                      <span
+                        className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold mt-1 ${
+                          PASTEL_PILL_CLASSES[lang.accent]
+                        }`}
+                      >
+                        {lang.proficiency}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 🎀 CERTIFICATIONS SECTION (WITH REAL BADGES & DATES) */}
+        {/* 🎀 CERTIFICATIONS SECTION */}
         <section
           id="certifications"
           className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
@@ -586,108 +504,117 @@ export default function App() {
           <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
               <span className="inline-block rounded-full bg-[#FCE1E4] px-3.5 py-1 text-xs font-bold text-[#8A2E3B] mb-2">
-                🎀 VERIFIED CREDENTIALS
+                🎀 CREDENTIALS
               </span>
               <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
                 Certifications
               </h2>
             </div>
-            <p className="text-sm text-[#7A6F66]">
-              Click <strong className="text-[#3D352E]">[ ↗ View Certificate ]</strong> to view official credential scans.
+            <p className="text-xs sm:text-sm text-[#7A6F66]">
+              Click <strong>View scan</strong> on certificates with uploaded credential documents.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {CERTIFICATIONS_DATA.map((cert, index) => (
-              <article
-                key={cert.id}
-                className="cozy-card p-6 sm:p-7 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <span
-                      className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1 text-xs font-bold ${
-                        PASTEL_PILL_CLASSES[cert.accent]
-                      }`}
-                    >
-                      <span>{cert.badgeEmoji}</span>
-                      <span>{cert.categoryLabel}</span>
-                    </span>
-                    <span className="text-xs font-semibold text-[#7A6F66] tabular-nums">
-                      #{index + 1}
-                    </span>
+            {CERTIFICATIONS_DATA.map((cert, index) => {
+              const hasScan = Boolean(cert.certificateImage);
+              return (
+                <article
+                  key={cert.id}
+                  className="cozy-card p-6 sm:p-7 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-4">
+                      <span
+                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-0.5 text-xs font-bold ${
+                          PASTEL_PILL_CLASSES[cert.accent]
+                        }`}
+                      >
+                        <span>{cert.badgeEmoji}</span>
+                        <span>{cert.categoryLabel}</span>
+                      </span>
+                      <span className="text-xs font-semibold text-[#7A6F66] tabular-nums">
+                        #{index + 1}
+                      </span>
+                    </div>
+
+                    {cert.badgeImage && (
+                      <div className="mb-4 flex items-center justify-center p-3 rounded-2xl bg-[#FAF7F2] border border-[#F0EAE1]">
+                        <img
+                          src={cert.badgeImage}
+                          alt=""
+                          aria-hidden="true"
+                          className="h-16 w-auto object-contain hover:scale-105 transition-transform"
+                        />
+                      </div>
+                    )}
+
+                    <h3 className="font-heading text-base sm:text-lg font-bold text-[#3D352E] mb-1">
+                      {cert.title}
+                    </h3>
+
+                    {cert.date && (
+                      <p className="text-xs font-bold text-[#2E5A36] mb-2">
+                        Issued: {cert.date}
+                      </p>
+                    )}
+
+                    <p className="text-xs sm:text-sm text-[#7A6F66] leading-relaxed">
+                      {cert.description}
+                    </p>
                   </div>
 
-                  {/* Badge image if available */}
-                  {cert.badgeImage && (
-                    <div className="mb-4 flex items-center justify-center p-3 rounded-2xl bg-[#FAF7F2] border border-[#F0EAE1]">
-                      <img
-                        src={cert.badgeImage}
-                        alt={cert.title}
-                        className="h-20 w-auto object-contain hover:scale-105 transition-transform"
-                      />
-                    </div>
-                  )}
-
-                  <h3 className="font-heading text-lg font-bold text-[#3D352E] mb-1">
-                    {cert.officialTitle || cert.title}
-                  </h3>
-
-                  {cert.date && (
-                    <p className="text-xs font-bold text-[#2E5A36] mb-2">
-                      📅 Date: {cert.date}
-                    </p>
-                  )}
-
-                  <p className="text-sm text-[#7A6F66] leading-relaxed">
-                    {cert.description}
-                  </p>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex items-center justify-between">
-                  <span className="text-xs font-medium text-[#7A6F66]">
-                    Gwyneth Ashley Mucio
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setActiveEvidenceId(cert.evidenceId)}
-                    className={`spring-btn rounded-full px-4 py-2 text-xs font-bold cursor-pointer whitespace-nowrap shrink-0 ${
-                      PASTEL_PILL_CLASSES[cert.accent]
-                    }`}
-                  >
-                    [ ↗ View Certificate ]
-                  </button>
-                </div>
-              </article>
-            ))}
+                  <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex items-center justify-between">
+                    <span className="text-xs text-[#7A6F66]">
+                      {hasScan ? 'Verified Scan' : 'Scan coming soon'}
+                    </span>
+                    {hasScan ? (
+                      <button
+                        type="button"
+                        onClick={() => handleOpenCertificate(cert.id)}
+                        className={`spring-btn rounded-full px-4 py-1.5 text-xs font-bold cursor-pointer whitespace-nowrap shrink-0 ${
+                          PASTEL_PILL_CLASSES[cert.accent]
+                        }`}
+                      >
+                        View scan
+                      </button>
+                    ) : (
+                      <span className="rounded-full bg-[#FAF7F2] border border-[#F0EAE1] px-3 py-1 text-xs font-semibold text-[#7A6F66]">
+                        Scan pending
+                      </span>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
-        {/* 💬 CONTACT & COMMENT SECTION (INTEGRATED FORMSPREE) */}
+        {/* 💬 CONTACT SECTION (SINGLE SOURCE OF TRUTH) */}
         <section
           id="contact"
           className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
         >
-          <div className="cozy-card p-6 sm:p-10 bg-gradient-to-br from-white via-[#FAF7F2] to-[#FCE1E4]/30">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="cozy-card p-6 sm:p-10 bg-gradient-to-br from-white via-[#FAF7F2] to-[#FCE1E4]/25">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               {/* Left Column: Direct Info */}
               <div className="lg:col-span-5 space-y-5">
                 <div>
                   <div className="inline-flex items-center gap-1.5 rounded-full bg-[#FCE1E4] px-3.5 py-1 text-xs font-bold text-[#8A2E3B] mb-2">
-                    <img src="/heart.gif" alt="heart" className="w-4 h-4 object-contain inline-block" />
+                    <img src="/heart.gif" alt="" aria-hidden="true" className="w-4 h-4 object-contain inline-block" />
                     <span>GET IN TOUCH</span>
                   </div>
                   <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
-                    Leave a Comment &amp; Connect 💬
+                    Let's Connect
                   </h2>
-                  <p className="text-sm text-[#7A6F66] mt-2">
-                    Feel free to leave your thoughts, questions, or internship inquiries below! Messages are delivered directly to Gwyneth.
+                  <p className="text-sm text-[#7A6F66] mt-2 leading-relaxed">
+                    I'm open to internship opportunities, academic discussions, and software collaboration. Send a message here or connect via GitHub.
                   </p>
                 </div>
 
                 <div className="space-y-3 text-sm text-[#3D352E]">
                   <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-center gap-3">
-                    <Mail className="h-4 w-4 text-[#8A2E3B] shrink-0" />
+                    <Mail className="h-4 w-4 text-[#8A2E3B] shrink-0" aria-hidden="true" />
                     <div>
                       <p className="text-xs font-bold text-[#7A6F66]">Email</p>
                       <a
@@ -700,25 +627,10 @@ export default function App() {
                   </div>
 
                   <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-center gap-3">
-                    <Phone className="h-4 w-4 text-[#2E5A36] shrink-0" />
-                    <div>
-                      <p className="text-xs font-bold text-[#7A6F66]">Phone</p>
-                      <a
-                        href={`tel:${PERSONAL_INFO_DATA.phone}`}
-                        className="font-semibold hover:text-[#2E5A36]"
-                      >
-                        {PERSONAL_INFO_DATA.phone}
-                      </a>
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-start gap-3">
-                    <MapPin className="h-4 w-4 text-[#7A5C12] shrink-0 mt-0.5" />
+                    <MapPin className="h-4 w-4 text-[#7A5C12] shrink-0" aria-hidden="true" />
                     <div>
                       <p className="text-xs font-bold text-[#7A6F66]">Location</p>
-                      <p className="font-medium leading-snug">
-                        {PERSONAL_INFO_DATA.address}
-                      </p>
+                      <p className="font-semibold">{PERSONAL_INFO_DATA.publicLocation}</p>
                     </div>
                   </div>
                 </div>
@@ -732,140 +644,52 @@ export default function App() {
                   >
                     <img
                       src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
-                      alt="GitHub"
+                      alt=""
+                      aria-hidden="true"
                       className="w-4 h-4"
                     />
                     <span>GitHub (@sdca-gwyneth-ashley-mucio)</span>
-                    <ExternalLink className="w-3 h-3 text-[#7A6F66]" />
+                    <ExternalLink className="w-3 h-3 text-[#7A6F66]" aria-hidden="true" />
                   </a>
 
-                  <a
-                    href={PERSONAL_INFO_DATA.oldGithubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-white border border-[#F0EAE1] px-4 py-2 text-xs font-bold text-[#7A6F66] hover:text-[#3D352E] hover:border-[#2E5A36] transition-colors"
-                  >
-                    <span>Personal GitHub (@gwynethashleymucio)</span>
-                    <ExternalLink className="w-3 h-3 text-[#7A6F66]" />
-                  </a>
+                  {PERSONAL_INFO_DATA.linkedinUrl && (
+                    <a
+                      href={PERSONAL_INFO_DATA.linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-white border border-[#F0EAE1] px-4 py-2 text-xs font-bold text-[#2D3A8C] hover:border-[#2D3A8C] transition-colors"
+                    >
+                      <img
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg"
+                        alt=""
+                        aria-hidden="true"
+                        className="w-4 h-4"
+                      />
+                      <span>LinkedIn Profile</span>
+                      <ExternalLink className="w-3 h-3 text-[#7A6F66]" aria-hidden="true" />
+                    </a>
+                  )}
                 </div>
               </div>
 
-              {/* Right Column: Working Comment Form */}
+              {/* Right Column: Working Contact Form */}
               <div className="lg:col-span-7">
-                <form
-                  onSubmit={handleInPageCommentSubmit}
-                  className="rounded-3xl border border-[#F0EAE1] bg-white p-6 sm:p-8 space-y-4 shadow-sm"
-                >
-                  <h3 className="font-heading text-lg font-bold text-[#3D352E] flex items-center gap-2">
-                    <span>Leave a Thought</span>
-                    <img src="/heart.gif" alt="heart" className="w-5 h-5 object-contain" />
-                  </h3>
-
-                  {commentSuccess ? (
-                    <div className="rounded-2xl bg-[#D8E8D5] p-5 text-sm font-bold text-[#2E5A36] space-y-1">
-                      <p>✨ Thank you so much for your comment!</p>
-                      <p className="text-xs font-normal text-[#2E5A36]/90">
-                        Your message has been delivered to Gwyneth's inbox.
-                      </p>
-                      <button
-                        type="button"
-                        onClick={() => setCommentSuccess(false)}
-                        className="text-xs underline font-semibold mt-2 cursor-pointer block"
-                      >
-                        Send another thought
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <label
-                            htmlFor="page-comment-name"
-                            className="block text-xs font-bold text-[#3D352E] mb-1.5"
-                          >
-                            Name <span className="text-[#8A2E3B]">*</span>
-                          </label>
-                          <input
-                            id="page-comment-name"
-                            type="text"
-                            required
-                            value={commentName}
-                            onChange={(e) => setCommentName(e.target.value)}
-                            placeholder="Your Name"
-                            className="w-full rounded-2xl border border-[#F0EAE1] bg-[#FAF7F2] px-4 py-2.5 text-sm text-[#3D352E] focus:bg-white focus:outline-none focus:border-[#2E5A36] transition-colors"
-                          />
-                        </div>
-
-                        <div>
-                          <label
-                            htmlFor="page-comment-email"
-                            className="block text-xs font-bold text-[#3D352E] mb-1.5"
-                          >
-                            Email <span className="text-[#8A2E3B]">*</span>
-                          </label>
-                          <input
-                            id="page-comment-email"
-                            type="email"
-                            required
-                            value={commentEmail}
-                            onChange={(e) => setCommentEmail(e.target.value)}
-                            placeholder="you@example.com"
-                            className="w-full rounded-2xl border border-[#F0EAE1] bg-[#FAF7F2] px-4 py-2.5 text-sm text-[#3D352E] focus:bg-white focus:outline-none focus:border-[#2E5A36] transition-colors"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label
-                          htmlFor="page-comment-msg"
-                          className="block text-xs font-bold text-[#3D352E] mb-1.5"
-                        >
-                          Message / Comment <span className="text-[#8A2E3B]">*</span>
-                        </label>
-                        <textarea
-                          id="page-comment-msg"
-                          rows={4}
-                          required
-                          value={commentMsg}
-                          onChange={(e) => setCommentMsg(e.target.value)}
-                          placeholder="Write your comment or message here..."
-                          className="w-full rounded-2xl border border-[#F0EAE1] bg-[#FAF7F2] px-4 py-2.5 text-sm text-[#3D352E] focus:bg-white focus:outline-none focus:border-[#2E5A36] transition-colors"
-                        />
-                      </div>
-
-                      {commentError && (
-                        <p className="text-xs font-bold text-[#8A2E3B]">
-                          {commentError}
-                        </p>
-                      )}
-
-                      <button
-                        type="submit"
-                        disabled={isSubmittingComment}
-                        className="spring-btn inline-flex items-center gap-2 rounded-full bg-[#FCE1E4] px-6 py-3 text-sm font-bold text-[#8A2E3B] hover:bg-[#f8cbd1] cursor-pointer disabled:opacity-50 shadow-xs"
-                      >
-                        <Send className="h-4 w-4" />
-                        <span>{isSubmittingComment ? 'Sending...' : 'Send Message 💬'}</span>
-                      </button>
-                    </>
-                  )}
-                </form>
+                <ContactForm />
               </div>
             </div>
           </div>
         </section>
 
-        {/* 🌸 COZY FOOTER */}
-        <footer className="mx-auto max-w-7xl px-4 sm:px-6 pt-6">
+        {/* 🌸 CLEAN FOOTER */}
+        <footer className="mx-auto max-w-7xl px-4 sm:px-6 pt-4">
           <div className="cozy-card p-6 sm:p-8 bg-white flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-[#7A6F66]">
             <div>
               <p className="font-heading font-bold text-base text-[#3D352E]">
                 🍵 {PERSONAL_INFO_DATA.fullName}
               </p>
               <p className="mt-0.5">
-                BSIT Student · {PERSONAL_INFO_DATA.institution} ·{' '}
-                {PERSONAL_INFO_DATA.address}
+                {PERSONAL_INFO_DATA.title} · {PERSONAL_INFO_DATA.institution} ·{' '}
+                {PERSONAL_INFO_DATA.publicLocation}
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
@@ -877,28 +701,31 @@ export default function App() {
               </a>
               <span aria-hidden="true">·</span>
               <a
-                href={`tel:${PERSONAL_INFO_DATA.phone}`}
-                className="hover:text-[#2E5A36] font-semibold tabular-nums"
+                href={PERSONAL_INFO_DATA.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#2E5A36] font-semibold"
               >
-                {PERSONAL_INFO_DATA.phone}
+                GitHub
               </a>
               <span aria-hidden="true">·</span>
-              <button
-                type="button"
-                onClick={() => setActiveEvidenceId('ev-resume')}
-                className="hover:text-[#2E5A36] font-semibold cursor-pointer"
+              <a
+                href={PERSONAL_INFO_DATA.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#2E5A36] font-semibold"
               >
-                One-Page Resume
-              </button>
+                Resume (PDF)
+              </a>
             </div>
           </div>
         </footer>
       </main>
 
-      {/* Lightbox Modal */}
-      <EvidenceModal
-        evidence={activeEvidencePayload}
-        onClose={() => setActiveEvidenceId(null)}
+      {/* Accessible Certificate Modal */}
+      <CertificateModal
+        certificate={activeCertificate}
+        onClose={() => setActiveCertificate(null)}
       />
     </div>
   );

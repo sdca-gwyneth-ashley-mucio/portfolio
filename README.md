@@ -1,20 +1,41 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Gwyneth Ashley Mucio — BSIT Portfolio & Digital Garden
 
-# Run and deploy your AI Studio app
+Cozy matcha-themed academic portfolio and digital garden for **Gwyneth Ashley Pacifico Mucio**, Bachelor of Science in Information Technology (BSIT) student at **St. Dominic College of Asia**.
 
-This contains everything you need to run your app locally.
+## 🍵 Features
 
-View your app in AI Studio: https://ai.studio/apps/5fa8da8a-08f1-4b87-82d1-ac0d0c6cd77f
+- **Profile & Background**: Information Technology student profile, academic journey, and authentic summary.
+- **Technology Stack**: Categorized tools across Languages (Java, JavaScript, C, HTML5, CSS3, SQL, Dart), Frameworks & Platforms (Flutter, Firebase, Oracle APEX), and Tools & IDEs (VS Code, Eclipse, NetBeans, GitHub).
+- **Projects**:
+  - **SDCANTEEN** *(Academic Project · Completed)* — Canteen Ordering Management System for SDCA Digital Campus (Role: Backend Developer).
+  - **DC SPACE** *(Capstone Project · Ongoing)* — AI-driven Event Intelligence Platform for Predictive Crowd Management and Adaptive Event Optimization (Role: Documentation).
+- **Verified Certifications**: Official Microsoft Office Specialist (Word Associate, PowerPoint Associate) and Database credentials with interactive scan lightbox modals.
+- **Resume**: Direct PDF download (`/Gwyneth_Ashley_Mucio_Resume.pdf`).
+- **Interactive Contact**: Formspree-powered comment and messaging form with real delivery confirmation.
 
-## Run Locally
+## 🛠️ Tech Stack & Architecture
 
-**Prerequisites:**  Node.js
+- **Framework**: [React 19](https://react.dev/) + [Vite](https://vite.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/) + Devicons
+- **Language**: TypeScript
 
+## 🚀 Local Development
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+# Install dependencies
+npm install
+
+# Start local development server
+npm run dev
+
+# Run test suite
+node --experimental-strip-types --test src/utils/portfolioLogic.test.ts
+
+# Production build
+npm run build
+```
+
+## 📦 Deployment
+
+Configured for automatic continuous deployment on **Vercel** connected to GitHub `main` branch.
