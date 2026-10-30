@@ -36,6 +36,7 @@ import {
   FolderGit2,
   FileDown,
   Share2,
+  FileText,
 } from 'lucide-react';
 
 const PASTEL_PILL_CLASSES: Record<
@@ -111,70 +112,68 @@ export default function App() {
                   >
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                       {/* Left Column: Details & Modules */}
-                      <div className="lg:col-span-5 flex flex-col justify-between h-full">
-                        <div>
-                          {/* Header Badges */}
-                          <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <span className="rounded-full bg-[#3D352E] px-3 py-1 text-xs font-bold text-white">
-                                Role: {proj.role}
-                              </span>
-                              <span className="rounded-full px-3 py-1 text-xs font-bold inline-flex items-center gap-1.5 bg-[#FFF3B0] text-[#7A5C12]">
-                                <span
-                                  className="w-1.5 h-1.5 rounded-full bg-[#7A5C12] animate-pulse"
-                                  aria-hidden="true"
-                                />
-                                Ongoing
-                              </span>
-                            </div>
-                            <span className="text-xs font-bold text-[#7A6F66]">
-                              {proj.projectType}
+                      <div className="lg:col-span-5 space-y-5">
+                        {/* Header Badges */}
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="rounded-full bg-[#3D352E] px-3 py-1 text-xs font-bold text-white">
+                              Role: {proj.role}
+                            </span>
+                            <span className="rounded-full px-3 py-1 text-xs font-bold inline-flex items-center gap-1.5 bg-[#FFF3B0] text-[#7A5C12]">
+                              <span
+                                className="w-1.5 h-1.5 rounded-full bg-[#7A5C12] animate-pulse"
+                                aria-hidden="true"
+                              />
+                              Ongoing
                             </span>
                           </div>
+                          <span className="text-xs font-bold text-[#7A6F66]">
+                            {proj.projectType}
+                          </span>
+                        </div>
 
+                        <div>
                           <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E] mb-1">
                             {proj.title}
                           </h3>
-                          <p className="text-xs sm:text-sm font-semibold text-[#8A2E3B] mb-3">
+                          <p className="text-xs sm:text-sm font-semibold text-[#8A2E3B]">
                             {proj.subtitle}
                           </p>
-
-                          <p className="text-sm text-[#3D352E] leading-relaxed mb-6">
-                            {proj.description}
-                          </p>
-
-                          {/* Features list */}
-                          <div className="space-y-2 pt-4 border-t border-[#F0EAE1]">
-                            <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66]">
-                              Key Features &amp; Modules:
-                            </p>
-                            <ul className="space-y-2 text-xs sm:text-sm text-[#3D352E]">
-                              {proj.features.map((feat, idx) => (
-                                <li key={idx} className="flex items-start gap-2">
-                                  <span
-                                    className="text-[#8A2E3B] font-bold mt-0.5"
-                                    aria-hidden="true"
-                                  >
-                                    •
-                                  </span>
-                                  <span>{feat}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
                         </div>
 
-                        <div className="mt-8 pt-4 border-t border-[#F0EAE1] flex items-center justify-between text-xs text-[#7A6F66]">
-                          <span className="inline-flex items-center gap-1 font-medium">
-                            <FolderGit2
-                              className="h-3.5 w-3.5 text-[#8A2E3B]"
-                              aria-hidden="true"
-                            />
-                            {proj.projectType}
-                          </span>
-                          <span className="font-semibold text-[#8A2E3B]">
-                            {proj.role}
-                          </span>
+                        <p className="text-sm text-[#3D352E] leading-relaxed">
+                          {proj.description}
+                        </p>
+
+                        {/* Features list */}
+                        <div className="space-y-2.5 pt-4 border-t border-[#F0EAE1]">
+                          <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66]">
+                            Key Features &amp; Modules:
+                          </p>
+                          <ul className="space-y-2 text-xs sm:text-sm text-[#3D352E]">
+                            {proj.features.map((feat, idx) => (
+                              <li key={idx} className="flex items-start gap-2">
+                                <span
+                                  className="text-[#8A2E3B] font-bold mt-0.5"
+                                  aria-hidden="true"
+                                >
+                                  •
+                                </span>
+                                <span>{feat}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Documentation Leadership Card */}
+                        <div className="rounded-2xl border border-[#F0EAE1] bg-white/80 p-4 space-y-1">
+                          <div className="flex items-center gap-1.5 text-xs font-bold text-[#8A2E3B] uppercase tracking-wider">
+                            <FileText className="h-3.5 w-3.5" aria-hidden="true" />
+                            <span>Technical Documentation Scope</span>
+                          </div>
+                          <p className="text-xs text-[#5C5046] leading-relaxed">
+                            Authored complete system requirements, architectural diagrams, process flowcharts, and user manuals presented at the SDCA capstone exhibit.
+                          </p>
                         </div>
                       </div>
 
@@ -182,6 +181,20 @@ export default function App() {
                       <div className="lg:col-span-7">
                         <DcSpaceSlideshow />
                       </div>
+                    </div>
+
+                    {/* Unified Footer Spanning Full Width of the Card */}
+                    <div className="mt-8 pt-4 border-t border-[#F0EAE1] flex flex-wrap items-center justify-between gap-2 text-xs text-[#7A6F66]">
+                      <span className="inline-flex items-center gap-1.5 font-medium">
+                        <FolderGit2
+                          className="h-3.5 w-3.5 text-[#8A2E3B]"
+                          aria-hidden="true"
+                        />
+                        {proj.projectType} · St. Dominic College of Asia
+                      </span>
+                      <span className="font-semibold text-[#8A2E3B]">
+                        Role: {proj.role} (Technical Writing &amp; Process Design)
+                      </span>
                     </div>
                   </motion.article>
                 );

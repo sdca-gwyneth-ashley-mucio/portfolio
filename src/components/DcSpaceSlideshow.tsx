@@ -145,9 +145,9 @@ export const DcSpaceSlideshow: React.FC = () => {
   };
 
   return (
-    <div className="rounded-3xl border border-[#E5DCD0] bg-[#FAF7F2] p-4 sm:p-5 shadow-xs">
+    <div className="space-y-3">
       {/* Header with Title and Slide Switcher Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#FCE1E4] text-[#8A2E3B]">
             <Sparkles className="h-4 w-4" />
