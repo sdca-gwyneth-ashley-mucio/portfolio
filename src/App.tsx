@@ -17,6 +17,8 @@ import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
 import { ContactForm } from './components/ContactForm';
 import { CertificateModal } from './components/CertificateModal';
+import { SocialPreviewModal } from './components/SocialPreviewModal';
+import { DcSpaceSlideshow } from './components/DcSpaceSlideshow';
 import { LocationPin } from './components/icons/LocationPin';
 import {
   FADE_UP_VARIANTS,
@@ -33,6 +35,7 @@ import {
   Code2,
   FolderGit2,
   FileDown,
+  Share2,
 } from 'lucide-react';
 
 const PASTEL_PILL_CLASSES: Record<
@@ -48,6 +51,7 @@ const PASTEL_PILL_CLASSES: Record<
 
 export default function App() {
   const [activeCertificate, setActiveCertificate] = useState<CertificationItem | null>(null);
+  const [socialPreviewOpen, setSocialPreviewOpen] = useState(false);
 
   const handleOpenCertificate = (id: string) => {
     const cert = getViewableCertificate(id);
@@ -92,9 +96,10 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
             {PROJECTS_DATA.map((proj) => {
               const isCompleted = proj.status === 'Completed';
+              const isDcSpace = proj.id === 'proj-dc-space';
               return (
                 <motion.article
                   key={proj.id}
@@ -153,6 +158,9 @@ export default function App() {
                         ))}
                       </ul>
                     </div>
+
+                    {/* Interactive Showcase Slideshow for DC SPACE */}
+                    {isDcSpace && <DcSpaceSlideshow />}
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex items-center justify-between text-xs text-[#7A6F66]">
@@ -768,6 +776,17 @@ export default function App() {
               >
                 Resume (PDF)
               </a>
+              <span aria-hidden="true">·</span>
+              <button
+                type="button"
+                onClick={() => setSocialPreviewOpen(true)}
+                className="hover:text-[#8A2E3B] font-semibold py-1 transition-colors inline-flex items-center gap-1.5 text-[#8A2E3B] bg-[#FCE1E4]/50 hover:bg-[#FCE1E4] px-2.5 py-1 rounded-full cursor-pointer"
+                title="Preview Open Graph & Twitter Cards across social platforms"
+                aria-label="Preview Open Graph Social Cards"
+              >
+                <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
+                <span>Social Preview</span>
+              </button>
             </div>
           </div>
         </footer>
@@ -777,6 +796,12 @@ export default function App() {
       <CertificateModal
         certificate={activeCertificate}
         onClose={() => setActiveCertificate(null)}
+      />
+
+      {/* Social Preview Inspector Modal */}
+      <SocialPreviewModal
+        isOpen={socialPreviewOpen}
+        onClose={() => setSocialPreviewOpen(false)}
       />
     </div>
   );

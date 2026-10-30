@@ -8,10 +8,12 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test src/utils/portfolioLogic.test.ts"
+    "test": "node --experimental-strip-types --test src/utils/portfolioLogic.test.ts src/utils/ogHelper.test.ts",
+    "generate:og": "node scripts/generate-og.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "@vercel/og": "^1.0.3",
     "@vitejs/plugin-react": "^6.1.1",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
