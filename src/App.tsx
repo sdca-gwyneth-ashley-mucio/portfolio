@@ -96,76 +96,163 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+          <div className="space-y-8">
             {PROJECTS_DATA.map((proj) => {
               const isCompleted = proj.status === 'Completed';
               const isDcSpace = proj.id === 'proj-dc-space';
+
+              if (isDcSpace) {
+                return (
+                  <motion.article
+                    key={proj.id}
+                    whileHover={{ y: -3 }}
+                    transition={SOFT_SPRING}
+                    className="cozy-card p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-white via-white to-[#FAF7F2]"
+                  >
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                      {/* Left Column: Details & Modules */}
+                      <div className="lg:col-span-5 flex flex-col justify-between h-full">
+                        <div>
+                          {/* Header Badges */}
+                          <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="rounded-full bg-[#3D352E] px-3 py-1 text-xs font-bold text-white">
+                                Role: {proj.role}
+                              </span>
+                              <span className="rounded-full px-3 py-1 text-xs font-bold inline-flex items-center gap-1.5 bg-[#FFF3B0] text-[#7A5C12]">
+                                <span
+                                  className="w-1.5 h-1.5 rounded-full bg-[#7A5C12] animate-pulse"
+                                  aria-hidden="true"
+                                />
+                                Ongoing
+                              </span>
+                            </div>
+                            <span className="text-xs font-bold text-[#7A6F66]">
+                              {proj.projectType}
+                            </span>
+                          </div>
+
+                          <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E] mb-1">
+                            {proj.title}
+                          </h3>
+                          <p className="text-xs sm:text-sm font-semibold text-[#8A2E3B] mb-3">
+                            {proj.subtitle}
+                          </p>
+
+                          <p className="text-sm text-[#3D352E] leading-relaxed mb-6">
+                            {proj.description}
+                          </p>
+
+                          {/* Features list */}
+                          <div className="space-y-2 pt-4 border-t border-[#F0EAE1]">
+                            <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66]">
+                              Key Features &amp; Modules:
+                            </p>
+                            <ul className="space-y-2 text-xs sm:text-sm text-[#3D352E]">
+                              {proj.features.map((feat, idx) => (
+                                <li key={idx} className="flex items-start gap-2">
+                                  <span
+                                    className="text-[#8A2E3B] font-bold mt-0.5"
+                                    aria-hidden="true"
+                                  >
+                                    •
+                                  </span>
+                                  <span>{feat}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div className="mt-8 pt-4 border-t border-[#F0EAE1] flex items-center justify-between text-xs text-[#7A6F66]">
+                          <span className="inline-flex items-center gap-1 font-medium">
+                            <FolderGit2
+                              className="h-3.5 w-3.5 text-[#8A2E3B]"
+                              aria-hidden="true"
+                            />
+                            {proj.projectType}
+                          </span>
+                          <span className="font-semibold text-[#8A2E3B]">
+                            {proj.role}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Right Column: Full-Width Slideshow */}
+                      <div className="lg:col-span-7">
+                        <DcSpaceSlideshow />
+                      </div>
+                    </div>
+                  </motion.article>
+                );
+              }
+
+              // SDCANTEEN: Full Width with 2-Column Responsive Features Grid
               return (
                 <motion.article
                   key={proj.id}
-                  whileHover={{ y: -4 }}
+                  whileHover={{ y: -3 }}
                   transition={SOFT_SPRING}
-                  className="cozy-card p-6 sm:p-8 flex flex-col justify-between bg-gradient-to-br from-white via-white to-[#FAF7F2]"
+                  className="cozy-card p-6 sm:p-8 bg-gradient-to-br from-white via-white to-[#FAF7F2]"
                 >
-                  <div>
-                    {/* Header Badges */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full bg-[#3D352E] px-3 py-1 text-xs font-bold text-white">
-                          Role: {proj.role}
-                        </span>
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-[#3D352E] px-3 py-1 text-xs font-bold text-white">
+                        Role: {proj.role}
+                      </span>
+                      <span className="rounded-full px-3 py-1 text-xs font-bold inline-flex items-center gap-1.5 bg-[#FCE1E4] text-[#8A2E3B]">
                         <span
-                          className={`rounded-full px-3 py-1 text-xs font-bold inline-flex items-center gap-1.5 ${
-                            isCompleted ? 'bg-[#FCE1E4] text-[#8A2E3B]' : 'bg-[#FFF3B0] text-[#7A5C12]'
-                          }`}
-                        >
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              isCompleted ? 'bg-[#8A2E3B]' : 'bg-[#7A5C12] animate-pulse'
-                            }`}
-                            aria-hidden="true"
-                          />
-                          {isCompleted ? 'Completed' : 'Ongoing'}
-                        </span>
-                      </div>
-                      <span className="text-xs font-bold text-[#7A6F66]">
-                        {proj.projectType}
+                          className="w-1.5 h-1.5 rounded-full bg-[#8A2E3B]"
+                          aria-hidden="true"
+                        />
+                        Completed
                       </span>
                     </div>
+                    <span className="text-xs font-bold text-[#7A6F66]">
+                      {proj.projectType}
+                    </span>
+                  </div>
 
-                    <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#3D352E] mb-1">
-                      {proj.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-semibold text-[#8A2E3B] mb-3">
-                      {proj.subtitle}
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#3D352E] mb-1">
+                    {proj.title}
+                  </h3>
+                  <p className="text-xs sm:text-sm font-semibold text-[#8A2E3B] mb-3">
+                    {proj.subtitle}
+                  </p>
+
+                  <p className="text-sm text-[#3D352E] leading-relaxed mb-6 max-w-4xl">
+                    {proj.description}
+                  </p>
+
+                  {/* Features in 2-column grid */}
+                  <div className="pt-4 border-t border-[#F0EAE1]">
+                    <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66] mb-3">
+                      Key Modules &amp; Systems Implemented:
                     </p>
-
-                    <p className="text-sm text-[#3D352E] leading-relaxed mb-5">
-                      {proj.description}
-                    </p>
-
-                    {/* Features list */}
-                    <div className="space-y-2 pt-3 border-t border-[#F0EAE1]">
-                      <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66]">
-                        Key Features &amp; Modules:
-                      </p>
-                      <ul className="space-y-1.5 text-xs sm:text-sm text-[#3D352E]">
-                        {proj.features.map((feat, idx) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <span className="text-[#8A2E3B] font-bold mt-0.5" aria-hidden="true">•</span>
-                            <span>{feat}</span>
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {proj.features.map((feat, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-start gap-2.5 rounded-xl border border-[#F0EAE1] bg-white/70 p-3 text-xs sm:text-sm text-[#3D352E]"
+                        >
+                          <span
+                            className="text-[#8A2E3B] font-bold mt-0.5"
+                            aria-hidden="true"
+                          >
+                            ✔
+                          </span>
+                          <span>{feat}</span>
+                        </div>
+                      ))}
                     </div>
-
-                    {/* Interactive Showcase Slideshow for DC SPACE */}
-                    {isDcSpace && <DcSpaceSlideshow />}
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex items-center justify-between text-xs text-[#7A6F66]">
                     <span className="inline-flex items-center gap-1 font-medium">
-                      <FolderGit2 className="h-3.5 w-3.5 text-[#8A2E3B]" aria-hidden="true" />
+                      <FolderGit2
+                        className="h-3.5 w-3.5 text-[#8A2E3B]"
+                        aria-hidden="true"
+                      />
                       {proj.projectType}
                     </span>
                     <span className="font-semibold text-[#8A2E3B]">

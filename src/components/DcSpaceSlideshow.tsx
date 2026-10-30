@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
-import { SOFT_SPRING } from '../utils/motionVariants';
 
 export interface Hotspot {
   id: string;
@@ -12,7 +11,6 @@ export interface Hotspot {
   role: string;
   affiliation?: string;
   description: string;
-  accent?: 'blush' | 'matcha' | 'butter' | 'lavender' | 'sky';
 }
 
 export interface SlideItem {
@@ -41,7 +39,6 @@ export const DC_SPACE_SLIDES: SlideItem[] = [
         role: 'Web-Based IoT Attendance System',
         affiliation: 'Capstone Innovation',
         description: 'Eliminates paper logs through RFID technology, real-time logging, and adaptive crowd intelligence.',
-        accent: 'butter',
       },
       {
         id: 'hs-amira',
@@ -52,7 +49,6 @@ export const DC_SPACE_SLIDES: SlideItem[] = [
         role: 'Capstone Researcher & Co-Developer',
         affiliation: 'BSIT, St. Dominic College of Asia',
         description: 'Co-developer demonstrating the live IoT attendance setup and presenting system capabilities at the SDCA booth.',
-        accent: 'lavender',
       },
       {
         id: 'hs-misxa',
@@ -63,7 +59,6 @@ export const DC_SPACE_SLIDES: SlideItem[] = [
         role: 'Capstone Researcher & Co-Developer',
         affiliation: 'BSIT, St. Dominic College of Asia',
         description: 'Co-developer managing live event check-in workflows, real-time tap-in validation, and system demonstrations.',
-        accent: 'blush',
       },
       {
         id: 'hs-live-station',
@@ -74,7 +69,6 @@ export const DC_SPACE_SLIDES: SlideItem[] = [
         role: 'Hardware & Web Interface Integration',
         affiliation: 'ESP32 & RFID Integration',
         description: 'Dual-laptop live testing station running registration and student tap-in/tap-out timestamp logging.',
-        accent: 'sky',
       },
     ],
   },
@@ -94,7 +88,6 @@ export const DC_SPACE_SLIDES: SlideItem[] = [
         role: 'Live Web Application',
         affiliation: 'Software Stack',
         description: 'Web dashboard displaying attendee status, student course, section, and live tap-in/tap-out timestamps.',
-        accent: 'lavender',
       },
       {
         id: 'hs-esp32',
@@ -105,7 +98,6 @@ export const DC_SPACE_SLIDES: SlideItem[] = [
         role: 'IoT Processing & Feedback Hub',
         affiliation: 'Hardware Component',
         description: 'Breadboard circuit equipped with jumper wiring and acoustic buzzer for instant audible tap verification.',
-        accent: 'sky',
       },
       {
         id: 'hs-rfid-scanner',
@@ -116,7 +108,6 @@ export const DC_SPACE_SLIDES: SlideItem[] = [
         role: 'Contactless Reader Terminal',
         affiliation: 'Input Hardware',
         description: 'Plug-and-play RFID reader providing contactless attendee verification under 1 second per tap.',
-        accent: 'matcha',
       },
       {
         id: 'hs-brochures',
@@ -127,7 +118,6 @@ export const DC_SPACE_SLIDES: SlideItem[] = [
         role: 'Lead: Gwyneth Ashley Mucio',
         affiliation: 'Technical Documentation & Systems Analysis',
         description: 'Official system leaflets, process flow manuals, and architectural diagrams authored for the capstone exhibit.',
-        accent: 'blush',
       },
     ],
   },
@@ -139,6 +129,7 @@ export const DcSpaceSlideshow: React.FC = () => {
 
   const currentSlide = DC_SPACE_SLIDES[currentSlideIndex];
   const isAnyActive = activeHotspotId !== null;
+  const activeHotspot = currentSlide.hotspots.find((h) => h.id === activeHotspotId);
 
   // Auto clear active hotspot on slide transition
   useEffect(() => {
@@ -154,7 +145,7 @@ export const DcSpaceSlideshow: React.FC = () => {
   };
 
   return (
-    <div className="mt-6 rounded-3xl border border-[#E5DCD0] bg-[#FAF7F2] p-4 sm:p-5 shadow-xs">
+    <div className="rounded-3xl border border-[#E5DCD0] bg-[#FAF7F2] p-4 sm:p-5 shadow-xs">
       {/* Header with Title and Slide Switcher Controls */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
         <div className="flex items-center gap-2">
@@ -210,7 +201,7 @@ export const DcSpaceSlideshow: React.FC = () => {
         </div>
       </div>
 
-      {/* Interactive Image Frame */}
+      {/* Interactive Image Frame (Clean, Unobscured) */}
       <div
         className="relative aspect-[4/3] sm:aspect-[16/10] w-full overflow-hidden rounded-2xl bg-[#EBE4DA] border border-[#E5DCD0] select-none"
         onClick={() => setActiveHotspotId(null)}
@@ -231,17 +222,12 @@ export const DcSpaceSlideshow: React.FC = () => {
               loading="lazy"
             />
 
-            {/* Subtle Gradient Vignette for better hotspot visibility */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10 pointer-events-none" />
+            {/* Subtle Gradient Vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none" />
 
-            {/* Hotspots */}
+            {/* Hotspots: Clean Tags */}
             {currentSlide.hotspots.map((hs) => {
               const isActive = activeHotspotId === hs.id;
-
-              // Smart boundary-aware positioning to prevent clipping
-              const isLowerHalf = hs.y > 48; // if in lower half, position ABOVE the pin
-              const isRightSide = hs.x > 62;
-              const isLeftSide = hs.x < 38;
 
               return (
                 <div
@@ -285,56 +271,6 @@ export const DcSpaceSlideshow: React.FC = () => {
                     </span>
                     <span>{hs.shortLabel}</span>
                   </button>
-
-                  {/* Tooltip Card (Smartly Positioned Above or Below) */}
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.div
-                        initial={{
-                          opacity: 0,
-                          y: isLowerHalf ? -8 : 8,
-                          scale: 0.95,
-                        }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{
-                          opacity: 0,
-                          y: isLowerHalf ? -8 : 8,
-                          scale: 0.95,
-                        }}
-                        transition={SOFT_SPRING}
-                        style={{
-                          left: isRightSide ? 'auto' : isLeftSide ? '0' : '50%',
-                          right: isRightSide ? '0' : 'auto',
-                          transform:
-                            isRightSide || isLeftSide
-                              ? 'none'
-                              : 'translateX(-50%)',
-                        }}
-                        className={`absolute w-64 sm:w-72 rounded-2xl bg-white p-4 text-left shadow-[0_12px_32px_-4px_rgba(61,53,46,0.18)] border border-[#E5DCD0] z-50 pointer-events-auto ${
-                          isLowerHalf
-                            ? 'bottom-full mb-3 origin-bottom'
-                            : 'top-full mt-3 origin-top'
-                        }`}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {/* Person / Component Title */}
-                        <h5 className="font-heading text-sm font-bold text-[#26201B] leading-snug">
-                          {hs.title}
-                        </h5>
-
-                        {/* Role & Affiliation */}
-                        <p className="text-xs font-semibold text-[#8A2E3B] mt-0.5">
-                          {hs.role}
-                          {hs.affiliation ? ` · ${hs.affiliation}` : ''}
-                        </p>
-
-                        {/* Description */}
-                        <p className="text-xs text-[#5C5046] mt-1.5 leading-relaxed">
-                          {hs.description}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </div>
               );
             })}
@@ -342,16 +278,72 @@ export const DcSpaceSlideshow: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* Role attribution pill bar */}
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[#E5DCD0]/70 text-[11px] sm:text-xs text-[#7A6F66]">
-        <div className="flex items-center gap-1.5">
-          <span className="font-semibold text-[#26201B]">DC SPACE Capstone Team:</span>
-          <span>Marqueses, Amira Rachel · Germino, Misxa Bien</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="font-semibold text-[#8A2E3B]">Documentation Lead:</span>
-          <span>Gwyneth Ashley Mucio</span>
-        </div>
+      {/* Dedicated Unobscured Info Drawer (Directly Below the Photo) */}
+      <div className="mt-3.5 min-h-[92px] rounded-2xl bg-white p-4 border border-[#E5DCD0] shadow-xs flex flex-col justify-center">
+        <AnimatePresence mode="wait">
+          {activeHotspot ? (
+            <motion.div
+              key={activeHotspot.id}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18 }}
+              className="space-y-1 text-left"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm leading-none" aria-hidden="true">
+                    🌸
+                  </span>
+                  <h5 className="font-heading text-sm sm:text-base font-bold text-[#26201B]">
+                    {activeHotspot.title}
+                  </h5>
+                </div>
+                <span className="rounded-full bg-[#FCE1E4] px-2.5 py-0.5 text-[11px] font-bold text-[#8A2E3B]">
+                  {activeHotspot.role}
+                </span>
+              </div>
+
+              {activeHotspot.affiliation && (
+                <p className="text-xs font-semibold text-[#8A2E3B]">
+                  {activeHotspot.affiliation}
+                </p>
+              )}
+
+              <p className="text-xs sm:text-sm text-[#5C5046] leading-relaxed pt-0.5">
+                {activeHotspot.description}
+              </p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="idle-state"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18 }}
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#7A6F66]"
+            >
+              <div className="space-y-1 text-left">
+                <div className="flex flex-wrap items-center gap-1.5 text-xs text-[#3D352E]">
+                  <span className="font-bold text-[#26201B]">
+                    👥 Capstone Team:
+                  </span>
+                  <span>Marqueses, Amira Rachel · Germino, Misxa Bien</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs">
+                  <span className="font-bold text-[#8A2E3B]">
+                    Documentation Lead:
+                  </span>
+                  <span>Gwyneth Ashley Mucio</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#8A2E3B] bg-[#FCE1E4]/60 px-3 py-1.5 rounded-full shrink-0">
+                <span>✨ Hover or tap any tag above to view details</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
