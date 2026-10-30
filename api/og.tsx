@@ -1,3 +1,4 @@
+import React from 'react';
 import { ImageResponse } from '@vercel/og';
 
 export const config = {
@@ -174,9 +175,8 @@ export default async function handler(request: Request) {
         height: 630,
       }
     );
-  } catch (e: any) {
-    return new Response(`Failed to generate Open Graph image: ${e.message}`, {
-      status: 500,
-    });
+  } catch {
+    // Graceful fallback: Redirect to pre-rendered static 1200x630 OG image
+    return Response.redirect(new URL('/og-image.png', request.url), 307);
   }
 }
