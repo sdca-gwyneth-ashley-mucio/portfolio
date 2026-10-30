@@ -115,8 +115,8 @@ export const DC_SPACE_SLIDES: SlideItem[] = [
         y: 67,
         shortLabel: 'Documentation',
         title: 'DC SPACE Documentation',
-        role: 'Lead: Gwyneth Ashley Mucio',
-        affiliation: 'Technical Documentation & Systems Analysis',
+        role: 'Documentation Leads',
+        affiliation: 'Gwyneth Ashley Mucio · Khrystelle Jan Esplana',
         description: 'Official system leaflets, process flow manuals, and architectural diagrams authored for the capstone exhibit.',
       },
     ],
@@ -278,24 +278,24 @@ export const DcSpaceSlideshow: React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* Dedicated Unobscured Info Drawer (Directly Below the Photo) */}
-      <div className="mt-3.5 min-h-[92px] rounded-2xl bg-white p-4 border border-[#E5DCD0] shadow-xs flex flex-col justify-center">
+      {/* Dedicated Unobscured Info Drawer (Directly Below the Photo - Compact, Zero Extra Space) */}
+      <div className="mt-2.5 min-h-[68px] rounded-2xl bg-white px-4 py-2 border border-[#E5DCD0] shadow-xs flex flex-col justify-center">
         <AnimatePresence mode="wait">
           {activeHotspot ? (
             <motion.div
               key={activeHotspot.id}
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
+              exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.18 }}
-              className="space-y-1 text-left"
+              className="space-y-0.5 text-left"
             >
-              <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center justify-between gap-1.5">
                 <div className="flex items-center gap-1.5">
                   <span className="text-sm leading-none" aria-hidden="true">
                     🌸
                   </span>
-                  <h5 className="font-heading text-sm sm:text-base font-bold text-[#26201B]">
+                  <h5 className="font-heading text-sm font-bold text-[#26201B]">
                     {activeHotspot.title}
                   </h5>
                 </div>
@@ -307,35 +307,39 @@ export const DcSpaceSlideshow: React.FC = () => {
               </div>
 
               {activeHotspot.affiliation && (
-                <p className="text-xs font-semibold text-[#8A2E3B]">
+                <p className="text-[11px] text-[#7A6F66]">
                   {activeHotspot.affiliation}
                 </p>
               )}
 
-              <p className="text-xs sm:text-sm text-[#5C5046] leading-relaxed pt-0.5">
+              <p className="text-xs text-[#5C5046] leading-relaxed">
                 {activeHotspot.description}
               </p>
             </motion.div>
           ) : (
             <motion.div
               key="idle-state"
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
+              exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.18 }}
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#7A6F66]"
+              className="space-y-1 text-xs"
             >
-              <div className="flex flex-wrap items-center gap-2 text-xs text-[#3D352E]">
-                <span className="font-bold text-[#26201B]">
+              <div className="flex flex-wrap items-center gap-1.5 text-xs text-[#3D352E]">
+                <span className="font-bold text-[#26201B] shrink-0">
                   👥 Capstone Team:
                 </span>
-                <span>Marqueses, Amira Rachel · Germino, Misxa Bien</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-xs">
-                <span className="font-bold text-[#8A2E3B]">
-                  Documentation Lead:
+                <span className="text-[#5C5046]">
+                  Marqueses, Amira Rachel · Germino, Misxa Bien
                 </span>
-                <span>Gwyneth Ashley Mucio</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                <span className="font-bold text-[#8A2E3B] shrink-0">
+                  Documentation Leads:
+                </span>
+                <span className="text-[#5C5046]">
+                  Gwyneth Ashley Mucio · Khrystelle Jan Esplana
+                </span>
               </div>
             </motion.div>
           )}
