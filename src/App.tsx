@@ -10,6 +10,7 @@ import {
   TECHNICAL_SKILLS,
   TECH_STACK_CATEGORIES,
   TECH_STACK_DATA,
+  LEADERSHIP_AND_ACTIVITIES_DATA,
   type CertificationItem,
 } from './data/portfolioData';
 import { getTechByCategory, getViewableCertificate } from './utils/portfolioLogic';
@@ -38,6 +39,9 @@ import {
   Share2,
   FileText,
   ArrowUp,
+  Users,
+  Trophy,
+  Presentation,
 } from 'lucide-react';
 
 const PASTEL_PILL_CLASSES: Record<
@@ -140,9 +144,12 @@ export default function App() {
                               />
                               Ongoing
                             </span>
+                            <span className="rounded-full px-3 py-1 text-xs font-bold inline-flex items-center gap-1.5 bg-[#FCE1E4] text-[#8A2E3B]">
+                              IoT Project
+                            </span>
                           </div>
                           <span className="text-xs font-bold text-[#7A6F66]">
-                            {proj.projectType}
+                            Capstone Project · IoT System
                           </span>
                         </div>
 
@@ -223,7 +230,7 @@ export default function App() {
                           className="h-3.5 w-3.5 text-[#8A2E3B]"
                           aria-hidden="true"
                         />
-                        {proj.projectType} · St. Dominic College of Asia
+                        Capstone Project · IoT System · St. Dominic College of Asia
                       </span>
                       <span className="font-semibold text-[#8A2E3B]">
                         Role: {proj.role} (Technical Writing &amp; Process Design)
@@ -631,6 +638,87 @@ export default function App() {
                 </motion.article>
               );
             })}
+          </div>
+        </motion.section>
+
+        {/* LEADERSHIP, OFFICERSHIP & ACADEMIC ACTIVITIES SECTION */}
+        <motion.section
+          id="leadership"
+          aria-labelledby="leadership-heading"
+          initial="hidden"
+          whileInView="visible"
+          viewport={REVEAL_VIEWPORT}
+          variants={FADE_UP_VARIANTS}
+          className="mx-auto max-w-7xl px-4 sm:px-6 scroll-mt-24"
+        >
+          <div className="mb-8">
+            <h2 id="leadership-heading" className="font-heading text-2xl sm:text-3xl font-bold text-[#3D352E]">
+              Leadership, Officership &amp; Academic Activities
+            </h2>
+            <p className="text-sm text-[#7A6F66] mt-1">
+              Student governance roles, capstone project leadership, and academic innovation exhibits at St. Dominic College of Asia.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {LEADERSHIP_AND_ACTIVITIES_DATA.map((item) => (
+              <motion.article
+                key={item.id}
+                whileHover={{ y: -4 }}
+                transition={SOFT_SPRING}
+                className="cozy-card p-6 sm:p-7 flex flex-col justify-between"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-0.5 text-xs font-bold ${
+                        PASTEL_PILL_CLASSES[item.accent]
+                      }`}
+                    >
+                      {item.badge === 'Officership' && <Users className="h-3.5 w-3.5" aria-hidden="true" />}
+                      {item.badge === 'Capstone Leadership' && <FileText className="h-3.5 w-3.5" aria-hidden="true" />}
+                      {item.badge === 'Academic Showcase' && <Presentation className="h-3.5 w-3.5" aria-hidden="true" />}
+                      <span>{item.badgeLabel}</span>
+                    </span>
+                    <span className="text-xs font-semibold text-[#7A6F66]">
+                      {item.period}
+                    </span>
+                  </div>
+
+                  <div>
+                    <h3 className="font-heading text-lg font-bold text-[#3D352E] mb-1">
+                      {item.role}
+                    </h3>
+                    <p className="text-xs font-semibold text-[#8A2E3B]">
+                      {item.organization}
+                    </p>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-[#5C5046] leading-relaxed">
+                    {item.description}
+                  </p>
+
+                  <div className="pt-3 border-t border-[#F0EAE1] space-y-2">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-[#7A6F66]">
+                      Key Responsibilities &amp; Outcomes:
+                    </p>
+                    <ul className="space-y-1.5 text-xs text-[#5C5046]">
+                      {item.highlights.map((h, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-[#8A2E3B] font-bold mt-0.5" aria-hidden="true">•</span>
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-5 pt-3 border-t border-[#F0EAE1] flex items-center justify-between text-xs text-[#7A6F66]">
+                  <span className="font-medium text-[#7A6F66]">St. Dominic College of Asia</span>
+                  <span className="font-semibold text-[#8A2E3B]">Verified Role</span>
+                </div>
+              </motion.article>
+            ))}
           </div>
         </motion.section>
 

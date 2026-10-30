@@ -63,7 +63,7 @@ export interface ProjectInfo {
   id: string;
   title: string;
   subtitle: string;
-  projectType: 'Capstone Project' | 'Academic Project';
+  projectType: string;
   role: string;
   status: 'Completed' | 'Ongoing';
   description: string;
@@ -86,6 +86,18 @@ export interface CertificationItem {
   /** Scan of the certificate. When missing, the card shows "Scan coming soon". */
   certificateImage?: string;
   date?: string;
+  accent: Accent;
+}
+
+export interface LeadershipExperience {
+  id: string;
+  role: string;
+  organization: string;
+  period: string;
+  badge: 'Officership' | 'Capstone Leadership' | 'Academic Showcase';
+  badgeLabel: string;
+  description: string;
+  highlights: string[];
   accent: Accent;
 }
 
@@ -236,7 +248,7 @@ export const PROJECTS_DATA: ProjectInfo[] = [
     id: 'proj-sdcanteen',
     title: 'SDCANTEEN',
     subtitle: 'Ordering Management System',
-    projectType: 'Academic Project',
+    projectType: '3rd-Year Course Project',
     role: 'Backend Developer',
     status: 'Completed',
     description:
@@ -327,5 +339,56 @@ export const CERTIFICATIONS_DATA: CertificationItem[] = [
     description: 'Core cybersecurity awareness, safe computing practices, and information protection.',
     // certificateImage: add the scan to /public and set the path here
     accent: 'lavender',
+  },
+];
+
+export const LEADERSHIP_AND_ACTIVITIES_DATA: LeadershipExperience[] = [
+  {
+    id: 'lead-2nd-year-rep',
+    role: 'Former 2nd Year Representative',
+    organization: 'St. Dominic College of Asia — BSIT Student Body',
+    period: 'A.Y. 2024–2025',
+    badge: 'Officership',
+    badgeLabel: 'Student Governance & Officership',
+    description:
+      'Served as the elected cohort representative for the 2nd-year BSIT student body. Acted as a direct bridge between students and faculty, coordinated department announcements, and supported student council academic and community initiatives.',
+    highlights: [
+      'Liaised between 2nd-year BSIT students and department leadership regarding academic concerns and schedules',
+      'Assisted student council officers in organizing campus IT Week assemblies and community activities',
+      'Promoted peer collaboration, academic study groups, and student welfare initiatives across the batch',
+    ],
+    accent: 'matcha',
+  },
+  {
+    id: 'lead-dcspace-doc',
+    role: 'Documentation Lead & Systems Analyst',
+    organization: 'DC SPACE Capstone Project · St. Dominic College of Asia',
+    period: '2025–Present',
+    badge: 'Capstone Leadership',
+    badgeLabel: 'Capstone Project Leadership',
+    description:
+      'Directing end-to-end technical documentation and systems analysis for the DC SPACE AI-driven crowd intelligence platform alongside co-lead Khrystelle Jan Esplana.',
+    highlights: [
+      'Authored complete System Requirements Specifications (SRS), architectural blueprints, and process flows',
+      'Prepared presentation leaflets, user manuals, and booth demonstration collateral for academic evaluation',
+      'Maintained cross-functional sprint tracking between hardware and software development leads',
+    ],
+    accent: 'lavender',
+  },
+  {
+    id: 'lead-capstone-exhibit',
+    role: 'Project Demonstrator & Booth Presenter',
+    organization: 'SDCA Capstone Project Exhibit & Innovation Showcase',
+    period: '2026',
+    badge: 'Academic Showcase',
+    badgeLabel: 'Academic Showcase & Exhibition',
+    description:
+      'Demonstrated live IoT RFID attendance scanning, ESP32 microcontroller feedback, and real-time dashboard analytics to academic panels and campus guests.',
+    highlights: [
+      'Delivered live hardware-to-cloud IoT demonstrations during campus project showcase',
+      'Presented system features, process design, and answered technical evaluation questions from faculty panels',
+      'Collaborated with capstone teammates Marqueses, Germino, and Esplana on exhibit operations',
+    ],
+    accent: 'butter',
   },
 ];
