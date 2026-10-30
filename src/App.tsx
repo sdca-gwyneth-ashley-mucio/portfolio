@@ -39,9 +39,6 @@ import {
   Share2,
   FileText,
   ArrowUp,
-  Users,
-  Trophy,
-  Presentation,
 } from 'lucide-react';
 
 const PASTEL_PILL_CLASSES: Record<
@@ -668,30 +665,20 @@ export default function App() {
                 transition={SOFT_SPRING}
                 className="cozy-card p-6 sm:p-7 flex flex-col justify-between"
               >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between gap-2">
-                    <span
-                      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-0.5 text-xs font-bold ${
-                        PASTEL_PILL_CLASSES[item.accent]
-                      }`}
-                    >
-                      {item.badge === 'Officership' && <Users className="h-3.5 w-3.5" aria-hidden="true" />}
-                      {item.badge === 'Capstone Leadership' && <FileText className="h-3.5 w-3.5" aria-hidden="true" />}
-                      {item.badge === 'Academic Showcase' && <Presentation className="h-3.5 w-3.5" aria-hidden="true" />}
-                      <span>{item.badgeLabel}</span>
-                    </span>
+                <div className="space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="text-xs font-bold text-[#8A2E3B]">
+                      {item.organization}
+                    </p>
                     <span className="text-xs font-semibold text-[#7A6F66]">
                       {item.period}
                     </span>
                   </div>
 
                   <div>
-                    <h3 className="font-heading text-lg font-bold text-[#3D352E] mb-1">
+                    <h3 className="font-heading text-lg font-bold text-[#3D352E]">
                       {item.role}
                     </h3>
-                    <p className="text-xs font-semibold text-[#8A2E3B]">
-                      {item.organization}
-                    </p>
                   </div>
 
                   <p className="text-xs sm:text-sm text-[#5C5046] leading-relaxed">
