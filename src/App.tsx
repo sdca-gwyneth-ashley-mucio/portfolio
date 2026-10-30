@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   CERTIFICATIONS_DATA,
   EDUCATIONAL_BACKGROUND_DATA,
@@ -37,6 +37,7 @@ import {
   FileDown,
   Share2,
   FileText,
+  ArrowUp,
 } from 'lucide-react';
 
 const PASTEL_PILL_CLASSES: Record<
@@ -53,6 +54,19 @@ const PASTEL_PILL_CLASSES: Record<
 export default function App() {
   const [activeCertificate, setActiveCertificate] = useState<CertificationItem | null>(null);
   const [socialPreviewOpen, setSocialPreviewOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 350);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleOpenCertificate = (id: string) => {
     const cert = getViewableCertificate(id);
@@ -175,6 +189,25 @@ export default function App() {
                             Authored complete system requirements, architectural diagrams, process flowcharts, and user manuals presented at the SDCA capstone exhibit.
                           </p>
                         </div>
+
+                        {/* Core Architecture & Stack Pills */}
+                        {proj.techStack && (
+                          <div className="pt-1">
+                            <p className="text-[11px] font-bold uppercase tracking-wider text-[#7A6F66] mb-2">
+                              Core Architecture &amp; Tech Stack:
+                            </p>
+                            <div className="flex flex-wrap gap-1.5">
+                              {proj.techStack.map((tech, idx) => (
+                                <span
+                                  key={idx}
+                                  className="rounded-full bg-white border border-[#E5DCD0] px-2.5 py-1 text-[11px] font-semibold text-[#5C5046] shadow-xs"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {/* Right Column: Full-Width Slideshow */}
@@ -242,7 +275,7 @@ export default function App() {
                     <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66] mb-3">
                       Key Modules &amp; Systems Implemented:
                     </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
                       {proj.features.map((feat, idx) => (
                         <div
                           key={idx}
@@ -258,6 +291,65 @@ export default function App() {
                         </div>
                       ))}
                     </div>
+
+                    {/* SDCANTEEN Workflow Architecture Diagram */}
+                    <div className="rounded-2xl border border-[#F0EAE1] bg-white/60 p-4 space-y-3 mb-4">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="text-xs font-bold uppercase tracking-wider text-[#7A6F66]">
+                          Ordering &amp; Pickup Workflow Architecture:
+                        </p>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A2E3B] bg-[#FCE1E4] px-2.5 py-0.5 rounded-full">
+                          Backend Pipeline
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                        <div className="rounded-xl border border-[#F0EAE1] bg-white p-3 space-y-1">
+                          <span className="text-[10px] font-bold uppercase text-[#8A2E3B]">
+                            Stage 1
+                          </span>
+                          <h4 className="text-xs font-bold text-[#3D352E]">Menu &amp; Stock Sync</h4>
+                          <p className="text-[11px] text-[#7A6F66] leading-snug">Real-time daily availability &amp; price query logic.</p>
+                        </div>
+                        <div className="rounded-xl border border-[#F0EAE1] bg-white p-3 space-y-1">
+                          <span className="text-[10px] font-bold uppercase text-[#8A2E3B]">
+                            Stage 2
+                          </span>
+                          <h4 className="text-xs font-bold text-[#3D352E]">Token Generation</h4>
+                          <p className="text-[11px] text-[#7A6F66] leading-snug">Cart session validation &amp; queue token creation.</p>
+                        </div>
+                        <div className="rounded-xl border border-[#F0EAE1] bg-white p-3 space-y-1">
+                          <span className="text-[10px] font-bold uppercase text-[#8A2E3B]">
+                            Stage 3
+                          </span>
+                          <h4 className="text-xs font-bold text-[#3D352E]">Kitchen Queue</h4>
+                          <p className="text-[11px] text-[#7A6F66] leading-snug">Order receipt, preparation state &amp; inventory update.</p>
+                        </div>
+                        <div className="rounded-xl border border-[#F0EAE1] bg-white p-3 space-y-1">
+                          <span className="text-[10px] font-bold uppercase text-[#8A2E3B]">
+                            Stage 4
+                          </span>
+                          <h4 className="text-xs font-bold text-[#3D352E]">Pickup Dispatch</h4>
+                          <p className="text-[11px] text-[#7A6F66] leading-snug">Order ready status alert &amp; transaction fulfillment.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Backend Stack Badges */}
+                    {proj.techStack && (
+                      <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                        <span className="text-xs font-bold text-[#7A6F66] mr-1">
+                          Backend Stack:
+                        </span>
+                        {proj.techStack.map((tech, idx) => (
+                          <span
+                            key={idx}
+                            className="rounded-full bg-white border border-[#E5DCD0] px-3 py-1 text-xs font-semibold text-[#5C5046] shadow-xs"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-[#F0EAE1] flex items-center justify-between text-xs text-[#7A6F66]">
@@ -848,6 +940,9 @@ export default function App() {
                 {PERSONAL_INFO_DATA.title} · {PERSONAL_INFO_DATA.institution} ·{' '}
                 {PERSONAL_INFO_DATA.publicLocation}
               </p>
+              <p className="text-[11px] text-[#A89E94] mt-1 font-medium">
+                Academic Evaluation Copy · Bachelor of Science in Information Technology (BSIT) · St. Dominic College of Asia
+              </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <a
@@ -891,6 +986,26 @@ export default function App() {
           </div>
         </footer>
       </main>
+
+      {/* Floating Scroll To Top Spring Button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            type="button"
+            onClick={scrollToTop}
+            initial={{ opacity: 0, scale: 0.8, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 16 }}
+            transition={SOFT_SPRING}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.94 }}
+            aria-label="Scroll back to top"
+            className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-[#8A2E3B] text-white shadow-lg shadow-[#8A2E3B]/25 hover:bg-[#6F232D] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8A2E3B] cursor-pointer"
+          >
+            <ArrowUp className="h-5 w-5" aria-hidden="true" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Accessible Certificate Modal */}
       <CertificateModal

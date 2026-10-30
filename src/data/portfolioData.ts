@@ -247,6 +247,13 @@ export const PROJECTS_DATA: ProjectInfo[] = [
       'Staff management of menu updates, stock, incoming orders, and sales information',
       'Queue numbers and order-status notifications to keep pickup organized',
     ],
+    techStack: [
+      'SQL Database',
+      'Order Queue Processing',
+      'Session & Cart Logic',
+      'CRUD Operations',
+      'Staff Stock Management',
+    ],
     accent: 'matcha',
   },
   {
@@ -262,6 +269,13 @@ export const PROJECTS_DATA: ProjectInfo[] = [
       'Event-related data analysis',
       'Predictive crowd management',
       'Adaptive event optimization based on anticipated crowd needs',
+    ],
+    techStack: [
+      'ESP32 Microcontroller',
+      'RFID Contactless Terminal',
+      'Real-Time Web Dashboard',
+      'Systems Analysis',
+      'Technical Documentation',
     ],
     accent: 'lavender',
   },
