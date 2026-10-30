@@ -14,7 +14,7 @@ export const DEFAULT_OG_CONFIG = {
   tags: ['Java', 'SQL', 'Oracle APEX', 'Flutter', 'Firebase'],
   domain: 'https://gwynethashleymucio.vercel.app',
   fallbackImageUrl: 'https://gwynethashleymucio.vercel.app/og-image.png',
-  dynamicEndpoint: 'https://gwynethashleymucio.vercel.app/api/og',
+  dynamicEndpoint: 'https://gwynethashleymucio.vercel.app/og-image.png',
 } as const;
 
 /**
@@ -25,7 +25,7 @@ export function buildOgImageUrl(
   options?: { relative?: boolean; baseUrl?: string }
 ): string {
   const base = options?.relative
-    ? '/api/og'
+    ? '/og-image.png'
     : options?.baseUrl || DEFAULT_OG_CONFIG.dynamicEndpoint;
 
   if (!params) {

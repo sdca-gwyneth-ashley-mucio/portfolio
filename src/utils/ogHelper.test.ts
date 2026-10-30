@@ -18,19 +18,19 @@ test('buildOgImageUrl constructs valid query params for custom title and badge',
   });
 
   const parsed = new URL(url);
-  assert.equal(parsed.pathname, '/api/og');
+  assert.equal(parsed.pathname, '/og-image.png');
   assert.equal(parsed.searchParams.get('title'), 'SDCANTEEN - Backend Project');
   assert.equal(parsed.searchParams.get('badge'), '🚀 Featured Project');
 });
 
 test('buildOgImageUrl supports relative URLs for local dev', () => {
   const url = buildOgImageUrl({ title: 'Local Preview' }, { relative: true });
-  assert.ok(url.startsWith('/api/og?title=Local+Preview'));
+  assert.ok(url.startsWith('/og-image.png?title=Local+Preview'));
 });
 
 test('isValidOgImageUrl validates absolute URLs correctly', () => {
-  assert.equal(isValidOgImageUrl('https://gwynethashleymucio.vercel.app/api/og'), true);
-  assert.equal(isValidOgImageUrl('http://localhost:3000/api/og'), true);
-  assert.equal(isValidOgImageUrl('/api/og'), false);
+  assert.equal(isValidOgImageUrl('https://gwynethashleymucio.vercel.app/og-image.png'), true);
+  assert.equal(isValidOgImageUrl('http://localhost:3000/og-image.png'), true);
+  assert.equal(isValidOgImageUrl('/og-image.png'), false);
   assert.equal(isValidOgImageUrl('invalid-url'), false);
 });
