@@ -149,7 +149,7 @@ export const SocialPreviewModal: React.FC<SocialPreviewModalProps> = ({
                     Gwyneth Ashley Mucio | BSIT Portfolio &amp; Digital Garden
                   </div>
                   <p className="text-[#949BA4] mb-3 leading-relaxed">
-                    Official portfolio of Gwyneth Ashley Pacifico Mucio — BSIT
+                    Official portfolio of Gwyneth Ashley Mucio — BSIT
                     student at St. Dominic College of Asia, backend developer of
                     SDCANTEEN, and documentation lead for DC SPACE.
                   </p>
@@ -179,7 +179,7 @@ export const SocialPreviewModal: React.FC<SocialPreviewModalProps> = ({
                     {title} | BSIT Portfolio &amp; Digital Garden
                   </div>
                   <p className="text-neutral-400 mt-0.5 line-clamp-2">
-                    Official portfolio of Gwyneth Ashley Pacifico Mucio — BSIT
+                    Official portfolio of Gwyneth Ashley Mucio — BSIT
                     student at St. Dominic College of Asia.
                   </p>
                 </div>

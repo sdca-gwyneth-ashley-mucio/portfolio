@@ -45,7 +45,7 @@ export const ContactForm: React.FC = () => {
     } catch {
       setStatus('error');
       setError(
-        `Sorry, your message couldn't be sent right now. Please email me directly at ${PERSONAL_INFO_DATA.email}.`
+        "Sorry, your message couldn't be sent right now. Please try again or reach out via GitHub."
       );
     }
   };

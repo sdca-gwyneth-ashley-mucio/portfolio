@@ -89,12 +89,12 @@ export const HeroSection: React.FC = () => {
                 <span>{PERSONAL_INFO_DATA.publicLocation}</span>
               </span>
               <a
-                href={`mailto:${PERSONAL_INFO_DATA.email}`}
+                href="#contact"
                 className="inline-flex items-center gap-1.5 hover:text-[#8A2E3B] py-1 transition-colors"
-                aria-label={`Send email to ${PERSONAL_INFO_DATA.email}`}
+                aria-label="Send a direct message via contact form"
               >
                 <Mail className="h-4 w-4 text-[#8A2E3B]" aria-hidden="true" />
-                <span>{PERSONAL_INFO_DATA.email}</span>
+                <span>Contact via Form</span>
               </a>
             </div>
           </div>

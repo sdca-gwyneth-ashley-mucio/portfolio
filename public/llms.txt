@@ -1,6 +1,6 @@
 # Gwyneth Ashley Mucio
 
-> Official digital garden and academic portfolio of Gwyneth Ashley Pacifico Mucio, Bachelor of Science in Information Technology (BSIT) student at St. Dominic College of Asia (SDCA), specializing in backend systems development, relational database engineering, and technical documentation.
+> Official digital garden and academic portfolio of Gwyneth Ashley Mucio, Bachelor of Science in Information Technology (BSIT) student at St. Dominic College of Asia (SDCA), specializing in backend systems development, relational database engineering, and technical documentation.
 
 ## Primary Links
 - [Portfolio Website](https://gwynethashleymucio.vercel.app/): Main academic portfolio and project showcase.
@@ -40,5 +40,4 @@
 
 ## Contact & Work Inquiries
 Gwyneth Ashley Mucio is open to software engineering internships, backend development roles, database administration traineeships, and academic collaborations.
-- Email: [mucioashley@gmail.com](mailto:mucioashley@gmail.com)
 - Portfolio Contact Form: [https://gwynethashleymucio.vercel.app/#contact](https://gwynethashleymucio.vercel.app/#contact)

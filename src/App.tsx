@@ -932,13 +932,10 @@ export default function App() {
                   <div className="rounded-2xl bg-white border border-[#F0EAE1] p-3.5 flex items-center gap-3">
                     <Mail className="h-4 w-4 text-[#8A2E3B] shrink-0" aria-hidden="true" />
                     <div>
-                      <p className="text-xs font-bold text-[#7A6F66]">Email</p>
-                      <a
-                        href={`mailto:${PERSONAL_INFO_DATA.email}`}
-                        className="font-semibold text-[#8A2E3B] hover:underline"
-                      >
-                        {PERSONAL_INFO_DATA.email}
-                      </a>
+                      <p className="text-xs font-bold text-[#7A6F66]">Direct Inquiries</p>
+                      <p className="font-semibold text-[#8A2E3B]">
+                        Send via Secure Contact Form
+                      </p>
                     </div>
                   </div>
 
@@ -1021,10 +1018,10 @@ export default function App() {
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <a
-                href={`mailto:${PERSONAL_INFO_DATA.email}`}
+                href="#contact"
                 className="hover:text-[#8A2E3B] font-semibold py-1 transition-colors"
               >
-                {PERSONAL_INFO_DATA.email}
+                Contact Form
               </a>
               <span aria-hidden="true">·</span>
               <a

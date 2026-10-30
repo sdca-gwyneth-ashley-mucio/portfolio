@@ -103,7 +103,7 @@ export interface LeadershipExperience {
 
 export const PERSONAL_INFO_DATA: PersonalInfo = {
   fullName: 'Gwyneth Ashley Mucio',
-  extendedFullName: 'Gwyneth Ashley Pacifico Mucio',
+  extendedFullName: 'Gwyneth Ashley Mucio',
   title: 'BS Information Technology Student',
   tagline:
     'BSIT student at St. Dominic College of Asia who builds backend systems and writes clear technical documentation.',
@@ -131,7 +131,7 @@ export const EDUCATIONAL_BACKGROUND_DATA: EducationItem[] = [
     id: 'edu-bsit',
     degreeOrTrack: 'Bachelor of Science in Information Technology (BSIT)',
     institution: 'St. Dominic College of Asia',
-    location: 'Emilio Aguinaldo Highway, Bacoor, Philippines',
+    location: 'Bacoor City, Cavite',
     period: '2023–Present',
     statusBadge: 'Current Degree Program',
     coursework: [
