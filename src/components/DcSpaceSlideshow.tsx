@@ -299,9 +299,11 @@ export const DcSpaceSlideshow: React.FC = () => {
                     {activeHotspot.title}
                   </h5>
                 </div>
-                <span className="rounded-full bg-[#FCE1E4] px-2.5 py-0.5 text-[11px] font-bold text-[#8A2E3B]">
-                  {activeHotspot.role}
-                </span>
+                {activeHotspot.role && (
+                  <span className="text-xs font-semibold text-[#8A2E3B]">
+                    {activeHotspot.role}
+                  </span>
+                )}
               </div>
 
               {activeHotspot.affiliation && (
@@ -321,25 +323,19 @@ export const DcSpaceSlideshow: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.18 }}
-              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#7A6F66]"
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#7A6F66]"
             >
-              <div className="space-y-1 text-left">
-                <div className="flex flex-wrap items-center gap-1.5 text-xs text-[#3D352E]">
-                  <span className="font-bold text-[#26201B]">
-                    👥 Capstone Team:
-                  </span>
-                  <span>Marqueses, Amira Rachel · Germino, Misxa Bien</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-xs">
-                  <span className="font-bold text-[#8A2E3B]">
-                    Documentation Lead:
-                  </span>
-                  <span>Gwyneth Ashley Mucio</span>
-                </div>
+              <div className="flex flex-wrap items-center gap-2 text-xs text-[#3D352E]">
+                <span className="font-bold text-[#26201B]">
+                  👥 Capstone Team:
+                </span>
+                <span>Marqueses, Amira Rachel · Germino, Misxa Bien</span>
               </div>
-
-              <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#8A2E3B] bg-[#FCE1E4]/60 px-3 py-1.5 rounded-full shrink-0">
-                <span>✨ Hover or tap any tag above to view details</span>
+              <div className="flex items-center gap-1.5 text-xs">
+                <span className="font-bold text-[#8A2E3B]">
+                  Documentation Lead:
+                </span>
+                <span>Gwyneth Ashley Mucio</span>
               </div>
             </motion.div>
           )}
